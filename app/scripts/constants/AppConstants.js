@@ -7,16 +7,16 @@ module.exports = {
     CREATE_IDENTITY: null,
     IMPORT_CHANNELS: null,
     LOADING: null,
-    LOAD_EPISODES: null,
+    LOAD_VIDEOS: null,
     LOAD_DETAIL: null,
+    MARK_AS: null,
     OPEN_LINK: null,
     REFRESH: null,
     REMOVE_CHANNEL: null,
     SEARCH: null,
     TOGGLE_EDIT_MODE: null,
     TOGGLE_FULL_SCREEN: null,
-    TOGGLE_SELECT_MODE: null,
-    UPDATE_EPISODE_STATUS: null
+    TOGGLE_SELECT_MODE: null
   }),
   ActionSources: keyMirror({
     SERVER_ACTION: null,
@@ -24,14 +24,11 @@ module.exports = {
   }),
   ActionUrls: {
     CHANNEL: 'https://www.googleapis.com/youtube/v3/channels',
-    COLLECTION: 'http://app.yinshi.co/api/v1/collection/',
     VIDEO: 'https://www.googleapis.com/youtube/v3/videos',
     PLAYLIST: 'https://www.googleapis.com/youtube/v3/playlistItems',
+    COLLECTION: 'http://app.yinshi.co/api/v1/collection/',
     SEARCH: 'http://app.yinshi.co/api/v1/search/',
-    SUBSCRIPTIONS: 'https://www.googleapis.com/youtube/v3/subscriptions',
-    EPISODES: function(id) {
-      return 'http://app.yinshi.co/api/v1/channel/' + id + '/Videos';
-    }
+    SUBSCRIPTIONS: 'https://www.googleapis.com/youtube/v3/subscriptions'
   },
   AuthObj: {
     client_id: '209892630468-q7ame617vlsif6nir4786u8k85dg2oug.apps.googleusercontent.com',

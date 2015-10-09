@@ -16,12 +16,10 @@ var ShowItem = React.createClass({
   },
   render() {
     var {channel} = this.props;
-    var {watchedCount} = this.props;
+    var {unwatchedCount} = this.props;
     var {isSelected} = this.props;
     var {updated} = this.props;
     var className = isSelected ? 'watch-item selected' : 'watch-item';
-    var VideosCount = channel.totalItemCount;
-    var unwatchedCount = channel.newItemCount;
 
     var countClass;
     unwatchedCount > 0 ? countClass = 'count' : countClass = 'count hide';

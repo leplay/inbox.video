@@ -27,6 +27,22 @@ $hover_color: #eee;
     }    
   }
 
+  .load-more {
+    background-color: #eee;
+    border: 1px solid #ccc;
+    color: #666;
+    cursor: pointer;
+    height: 26px;
+    line-height: 26px;
+    margin: 20px auto;
+    text-align: center;
+    width: 120px;
+
+    &:hover {
+      background-color: #ddd;
+    }
+  }
+
   .selecting .video .block {
     padding-left: 26px;
   }
@@ -49,6 +65,7 @@ $hover_color: #eee;
   .block {
     height: 48px;
     padding: 10px 15px;
+    word-break: break-all;
   }
 
   .season-text {
@@ -145,7 +162,7 @@ $hover_color: #eee;
     &::after {
       content: "";
       border-radius: 50%;
-      background-color: #2d88c0;
+      background-color: #2793e8;
       width: 8px;
       height: 8px;
       position: absolute;

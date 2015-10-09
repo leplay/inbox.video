@@ -15,7 +15,6 @@ var Welcome = React.createClass({
       var auth2 = gapi.auth2.init(Constants.AuthObj);
       auth2.signIn().then(function() {
         var profile = auth2.currentUser.get().getBasicProfile();
-        console.log(profile);
         var obj = {
           email: profile.getEmail(),
           name: profile.getName(),

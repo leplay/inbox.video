@@ -18,7 +18,7 @@ var videoItem = React.createClass({
     var {selectedVideoId} = this.props;
     var {currentChannel} = this.props;
     var {selectMode} = this.props;
-    var isSelected = selectedVideoId === video.id;
+    var isSelected = selectedVideoId === video.snippet.resourceId.videoId;
     var className = isSelected ? 'video selected' : 'video';
     var checkboxClass = selectMode ? 'checkbox' : 'checkbox hide';
 
@@ -30,9 +30,9 @@ var videoItem = React.createClass({
 
     return (
       <li className={className}>
-        <input className={checkboxClass} value={video.id} type="checkbox" />
-        <div className="block" onClick={this.clickVideo.bind(this, video.contentDetails.videoId)}>
-          <p className="video-title">{video.snippet.title}</p>
+        <input className={checkboxClass} value={video.snippet.resourceId.videoId} type="checkbox" />
+        <div className="block" onClick={this.clickVideo.bind(this, video.snippet.resourceId.videoId)}>
+          <p className="video-title">{video.snippet.title.length > 66 ? video.snippet.title.substr(0, 66) + '...' : video.snippet.title}</p>
           <span className="update-date">{updateTime}</span>
         </div>
       </li>

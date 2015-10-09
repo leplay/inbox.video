@@ -6,6 +6,9 @@
 
   &.with-bg {
     background: url(../images/logo.png) #fff no-repeat center center;
+    .tips {
+      margin: 40px auto 80px;  
+    }
   }
 
   .content {
@@ -27,11 +30,12 @@
     display: inline-block;
     font-size: 12px;
     position: relative;
+    margin-bottom: 36px;
 
     &.unwatched::after {
       content: "";
       border-radius: 50%;
-      background-color: #2d88c0;
+      background-color: #2793e8;
       width: 8px;
       height: 8px;
       position: absolute;
@@ -41,11 +45,18 @@
   }
 
   .description {
+    color: #666;
     margin: 24px 0;
+
+    .description-text {
+      font: 13px/15px Roboto, arial, sans-serif;
+      overflow: hidden;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
   }
 
   .source {
-    color: #666;
     margin: 24px 0;
   }
 
@@ -64,7 +75,7 @@
     margin: 240px auto;
     padding: 20px;
     text-align: center;
-    width: 660px;
+    width: 700px;
   }
 }
 
@@ -121,14 +132,18 @@
 }
 
 .fullscreen {
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 0;
-    height: calc(100% - 40px);
-    z-index: 9;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: calc(100% - 40px);
+  z-index: 9;
 
-    embed {
-      min-height: 300px;
-    }
+  embed {
+    min-height: 300px;
+  }
+}
+
+.fa-heartbeat {
+  color: #cd201f;
 }

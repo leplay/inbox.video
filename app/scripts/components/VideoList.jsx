@@ -19,7 +19,8 @@ var VideoList = React.createClass({
     var checkbox = $('.checkbox');
     var lastId;
     $('.videos').on('click', '.checkbox', function(e){
-      var id = parseInt($(this).val());
+      var id = $(this).val();
+      console.log(id);
       if (e.shiftKey && lastId) {
         var start = videoIds.indexOf(id);
         var end = videoIds.indexOf(lastId);
@@ -44,12 +45,16 @@ var VideoList = React.createClass({
       $('.checkbox').prop('checked', false);
     }
     ActionCreator.toggleSelectMode();
-    videoIds = _.pluck(this.props.videos, 'id');
+    _.each(this.props.videos, function(video) {
+      videoIds.push(video.snippet.resourceId.videoId);
+    });
   },
   selectAll: function() {
     var arr = new Array(this.props.videos.length);
     _.each(arr, function(item, index) {
       var value = videoIds[index];
+      console.log(videoIds)
+      console.log(value)
       $('.checkbox[value=' + value + ']').prop('checked', true);
     });
   },
@@ -57,13 +62,16 @@ var VideoList = React.createClass({
     var ele = $('.checkbox:checked');
     var vals = [];
     ele.each(function() {
-      vals.push(parseInt($(this).val()));
+      vals.push($(this).val());
     });
-    ActionCreator.updateVideoStatus(this.props.currentChannel.channelId, vals, status);
+    ActionCreator.markAs(this.props.currentChannel.channelId, vals, status);
+  },
+  loadMore: function(token) {
+    ActionCreator.getVideos(this.props.currentChannel, token);
   },
   render() {
     var {videos} = this.props;
-    var {watchedItems} = this.props;
+    var {unwatchedItems} = this.props;
     var {selectedVideoId} = this.props;
     var {selectMode} = this.props;
     var {fullScreen} = this.props;
@@ -73,11 +81,11 @@ var VideoList = React.createClass({
     var countClass;
     var markClass;
     var listClass;
+    var loadMoreClass = videos.length === parseInt(currentChannel.totalItemCount) ? 'load-more hide' : 'load-more';
     var selectAllClass = 'select-all';
     var statusStyle = {
       backgroundImage: 'url(' + currentChannel.thumbnail + ')'
     };
-    console.log(statusStyle)
 
     channelId = currentChannel.channelId;
     if (selectMode) {
@@ -88,7 +96,7 @@ var VideoList = React.createClass({
       markClass = 'hide';
       selectAllClass += ' hide';
     }
-    console.log(currentChannel);
+
     return (
       <div className={className} ref="videos">
         <div className="status" style={statusStyle}>
@@ -96,12 +104,13 @@ var VideoList = React.createClass({
         </div>
         <ol className={listClass}>
           {videos.map(video =>
-            <VideoItem video={video} currentChannel={currentChannel.title} selectMode={selectMode} selectedVideoId={selectedVideoId} isWatched={watchedItems.indexOf(video.id) >= 0} />
+            <VideoItem video={video} currentChannel={currentChannel.title} selectMode={selectMode} selectedVideoId={selectedVideoId} isWatched={unwatchedItems.indexOf(video.snippet.resourceId.videoId) < 0} />
           )}
         </ol>
+        <div className={loadMoreClass} onClick={this.loadMore.bind(this, currentChannel.nextPageToken)}>LOAD MORE</div>
         <div className="control videos-control">
             <span className="select-mode" onClick={this.toggleSelectMode}>{selectCopy}</span>
-            <span className={countClass}>{currentChannel.totalItemCount} Videos</span>
+            <span className={countClass}>{currentChannel.totalItemCount} videos</span>
             <div className={markClass}>
               <span className="mark-button" onClick={this.markAs.bind(this, 'watched')}>Watched</span>
               <span className="mark-button" onClick={this.markAs.bind(this, 'unwatched')}>Unwatched</span>

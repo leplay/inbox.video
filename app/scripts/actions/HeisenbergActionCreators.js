@@ -65,51 +65,6 @@ module.exports = {
       }
     });
   },
-  removeChannel: function(id) {
-    AppDispatcher.handleViewAction({
-      type: Constants.ActionTypes.REMOVE_CHANNEL,
-      id: id
-    });
-  },
-  updateVideoStatus: function(channelId, VideoIds, status) {
-    AppDispatcher.handleViewAction({
-      type: Constants.ActionTypes.UPDATE_VIDEO_STATUS,
-      channelId: channelId,
-      VideoIds: VideoIds,
-      status: status 
-    });
-  },
-  addToWatchlist: function(id) {
-    $.ajax({
-      url: Constants.ActionUrls.CHANNEL + id,
-      dataType: 'json',
-      withCreditial: true
-    }).done(function(resp) {
-      if (resp) {
-        AppDispatcher.handleViewAction({
-          type: Constants.ActionTypes.ADD_CHANNEL,
-          channel: resp
-        });
-      } else {
-        console.log('ajax error');
-      }
-    });
-  },
-  toggleEditMode: function() {
-    AppDispatcher.handleViewAction({
-      type: Constants.ActionTypes.TOGGLE_EDIT_MODE
-    });
-  },
-  toggleSelectMode: function() {
-    AppDispatcher.handleViewAction({
-      type: Constants.ActionTypes.TOGGLE_SELECT_MODE
-    });
-  },
-  toggleFullScreen: function() {
-    AppDispatcher.handleViewAction({
-      type: Constants.ActionTypes.TOGGLE_FULL_SCREEN
-    });
-  },
   refresh: function(list) {
     if (!list.length) {
       return false;
@@ -156,6 +111,56 @@ module.exports = {
     }
     loop();
   },
+  addToWatchlist: function(id) {
+    $.ajax({
+      url: Constants.ActionUrls.CHANNEL + id,
+      dataType: 'json',
+      withCreditial: true
+    }).done(function(resp) {
+      if (resp) {
+        AppDispatcher.handleViewAction({
+          type: Constants.ActionTypes.ADD_CHANNEL,
+          channel: resp
+        });
+      } else {
+        console.log('ajax error');
+      }
+    });
+  },
+
+
+
+
+
+  removeChannel: function(id) {
+    AppDispatcher.handleViewAction({
+      type: Constants.ActionTypes.REMOVE_CHANNEL,
+      id: id
+    });
+  },
+  markAs: function(channelId, videoIds, status) {
+    AppDispatcher.handleViewAction({
+      type: Constants.ActionTypes.MARK_AS,
+      channelId: channelId,
+      videoIds: videoIds,
+      status: status 
+    });
+  },
+  toggleEditMode: function() {
+    AppDispatcher.handleViewAction({
+      type: Constants.ActionTypes.TOGGLE_EDIT_MODE
+    });
+  },
+  toggleSelectMode: function() {
+    AppDispatcher.handleViewAction({
+      type: Constants.ActionTypes.TOGGLE_SELECT_MODE
+    });
+  },
+  toggleFullScreen: function() {
+    AppDispatcher.handleViewAction({
+      type: Constants.ActionTypes.TOGGLE_FULL_SCREEN
+    });
+  },
   openLink: function(url) {
     AppDispatcher.handleViewAction({
       type: Constants.ActionTypes.OPEN_LINK,
@@ -165,25 +170,13 @@ module.exports = {
   generatePlayerUrl: function(id, embed) {
     var url;
     if (!embed) {
-      url = 'https://www.youtube.com/watch?v=' + id + '&feature=' + location.hostname;
+      url = 'https://www.youtube.com/watch?v=' + id;
     } else {
       url = 'https://www.youtube.com/embed/' + id;
     }
     return url;
   },
-  getProvider: function(url) {
-    var parser = document.createElement('a');
-    parser.href = url;
-    var arr = parser.hostname.split('.');
-    var provider = arr.slice(-2, -1).join();
-    return provider;
-  },
-
-
-
-
-
-  getVideos: function(channel) {
+  getVideos: function(channel, next) {
     var access_token = token.id;
     var data = {
       'part': 'snippet,contentDetails',
@@ -191,6 +184,11 @@ module.exports = {
       'playlistId': channel.playlistId,
       'access_token': access_token
     };
+
+    if (next) {
+      data.pageToken = next;
+    }
+
     $.ajax({
       url: Constants.ActionUrls.PLAYLIST,
       data: data,
@@ -198,8 +196,9 @@ module.exports = {
     }).done(function(resp) {
       if (resp) {
         AppDispatcher.handleViewAction({
-          type: Constants.ActionTypes.LOAD_VIDOES,
+          type: Constants.ActionTypes.LOAD_VIDEOS,
           data: resp.items,
+          next: resp.nextPageToken,
           channel: channel
         });
       } else {
@@ -220,7 +219,6 @@ module.exports = {
       data: data,
       withCreditial: true
     }).done(function(resp) {
-      console.log(resp)
       if (resp) {
         AppDispatcher.handleViewAction({
           type: Constants.ActionTypes.LOAD_DETAIL,
@@ -237,6 +235,41 @@ module.exports = {
       token.id = result.access_token;
       token.expiresAt = result.expires_at;
     }.bind(this));
+  },
+  initWatched: function(channels) {
+    _.each(channels, function(channel) {
+      console.log(channel);
+      var access_token = token.id;
+      var data = {
+        'part': 'snippet,contentDetails',
+        'maxResults': channel.newItemCount,
+        'playlistId': channel.playlistId,
+        'access_token': access_token
+      };
+
+      $.ajax({
+        url: Constants.ActionUrls.PLAYLIST,
+        data: data,
+        withCreditial: true
+      }).done(function(resp) {
+        if (resp) {
+          console.log(resp);
+          var videoIds = [];
+          _.each(resp.items, function(item) {
+            videoIds.push(item.snippet.resourceId.videoId);
+          });
+
+          AppDispatcher.handleViewAction({
+            type: Constants.ActionTypes.MARK_AS,
+            status: 'unwatched',
+            channelId: channel.channelId,
+            videoIds: videoIds
+          });
+        } else {
+          console.log('ajax error');
+        }
+      });
+    });
   },
   fetchSubscriptions: function(next) {
     var access_token = token.id;
@@ -263,12 +296,6 @@ module.exports = {
         subscriptions = subscriptions.concat(resp.items);
         if (subscriptions.length) {
           this.getPlaylistFromChannel(subscriptions, 0);
-
-        // AppDispatcher.handleViewAction({
-        //   type: Constants.ActionTypes.LOAD_CHANNEL_CENTER,
-        //   category: type,
-        //   data: resp
-        // });
         }   
       }
     }.bind(this));
@@ -280,6 +307,7 @@ module.exports = {
     _.each(channels, function(channel) {
       var obj = {};
       obj.channelId = channel.snippet.resourceId.channelId;
+      obj.provider = 'youtube';
       obj.newItemCount = channel.contentDetails.newItemCount;
       obj.totalItemCount = channel.contentDetails.totalItemCount;
       channelList.push(obj);
@@ -303,7 +331,7 @@ module.exports = {
         channelList[index]['title'] = item.snippet.title;
         channelList[index]['description'] = item.snippet.description;
         channelList[index]['thumbnail'] = item.snippet.thumbnails.high.url;
-      });
+      }.bind(this));
       if (list.length > 0) {
         loopTimes++;
         this.getPlaylistFromChannel(list, loopTimes);
@@ -312,6 +340,7 @@ module.exports = {
           type: Constants.ActionTypes.IMPORT_CHANNELS,
           channelList: channelList
         });
+        this.initWatched(channelList);
       }
     }.bind(this));
   },

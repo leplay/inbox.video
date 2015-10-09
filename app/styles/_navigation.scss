@@ -53,9 +53,10 @@
 
     .remove-icon {
       display: inline-block;
-      background-color: #dc8383;
+      background-color: #fa5858;
       border-radius: 50%;
       color: #fff;
+      font-family: arial;
       height: 12px;
       line-height: 12px;
       position: relative;
@@ -63,6 +64,8 @@
       visibility: hidden;
       width: 12px;
       transition: all ease-in-out 0.2s;
+      float: left;
+      top: 12px;
 
       &::after {
         background-color: #fff;
@@ -90,6 +93,7 @@
       border-left: 3px solid transparent;
       padding-left: 13px;
       position: relative;
+      overflow: hidden;
 
       &.animated {
         background-color: rgba(0, 0, 0, .5);

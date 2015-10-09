@@ -16,6 +16,9 @@ var Navigation = React.createClass({
   showCenter: function() {
     ActionCreator.getChannelList();
   },
+  showProfile: function() {
+    console.log('show profile');
+  },
   refresh: function() {
     ActionCreator.refresh(this.props.watchlist);
   },
@@ -24,7 +27,8 @@ var Navigation = React.createClass({
   },
   render() {
     var {watchlist} = this.props;
-    var {watched} = this.props;
+    var {unwatched} = this.props;
+    var {user} = this.props;
     var {editMode} = this.props;
     var {fullScreen} = this.props;
     var {refresh} = this.props;
@@ -35,7 +39,7 @@ var Navigation = React.createClass({
     var editClass = '';
     var editText = 'Edit';
 
-    if (fullScreen) {
+    if (fullScreen || !user.$name) {
       className = "navigation hide";
     }
 
@@ -61,13 +65,13 @@ var Navigation = React.createClass({
           <span className="text-grey edit-mode" onClick={this.toggleEditMode}>{editText}</span>
           <ul className={editClass}>
             {watchlist.map(channel =>
-              <WatchItem ref="item" channel={channel} updated={refresh.status === 2 && refresh.channelId === channel.channelId} isSelected={selectedChannelId === channel.channelId} watchedCount={watched[channel.channelId] ? watched[channel.channelId].length : 0} />
+              <WatchItem ref="item" channel={channel} updated={refresh.status === 2 && refresh.channelId === channel.channelId} isSelected={selectedChannelId === channel.channelId} unwatchedCount={unwatched[channel.channelId] ? unwatched[channel.channelId].length : 0} />
             )}
           </ul>
         </div>
 
         <div className="control navigation-control">
-          <span className="icon icon-plus" onClick={this.showCenter}><i className="fa fa-plus fa-fw"></i></span>
+          <span className="icon icon-profile" onClick={this.showProfile}><img src={user.$avatar} alt="profile" /></span>
           <span className="logo">{centerText}</span>
           <span className="icon icon-setting" onClick={this.refresh}><i className={refreshClass}></i></span>
         </div>
