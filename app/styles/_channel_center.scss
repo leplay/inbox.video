@@ -1,0 +1,148 @@
+.channel-center {
+  background: #fff;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  .button {
+    background-color: #7bc1b9;
+    color: #fff;
+    display: block;
+    line-height: 32px;
+    text-align: center;
+    text-decoration: none;
+    margin: 0 auto;
+    width: 80px;
+  }
+
+  .button-signin {
+    background-image: url(../images/btn_google_normal.png);
+    background-color: #fff;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    display: block;
+    width: 193px;
+    height: 48px;
+    &:hover {
+      background-image: url(../images/btn_google_pressed.png);
+    }
+  }
+
+  &.form {
+    background-image: none;
+  }
+
+  .inner-form {
+    width: 322px;
+    margin: 300px auto 0;
+    text-align: center;
+
+    input {
+      border: 1px solid #ccc;
+      font-size: 14px;
+      line-height: 32px;
+      height: 32px;
+      margin: 20px 0;
+      padding: 0 4px;
+      width: 320px;
+    }
+  }
+
+  .header {
+    width: 400px;
+    margin: 60px auto 0;
+
+    h2 {
+      text-align: center;
+    }
+
+    .search-form {
+      margin: 30px auto;
+      overflow: hidden;
+
+      input {
+        border: 1px solid #ccc;
+        float: left;
+        height: 30px;
+        line-height: 30px;
+        outline: none;
+        padding: 0 4px;
+        width: 310px;
+      }
+      .button-search {
+        float: left;
+        height: 32px;
+        margin: 0;
+      }
+    }
+  }
+
+  .channel-nav {
+    max-width: 930px;
+    margin: 40px auto 0;
+    position: relative;
+
+    ul {
+      position: absolute;
+      right: 0;
+      top: 2px;
+
+      li {
+        float: left;
+        margin-left: 12px;
+      }
+    }
+  }
+
+  .channel-list, .no-result {
+    margin: 6px auto 20px;
+    max-width: 954px;
+    overflow: hidden;
+  }
+
+  .no-result {
+    max-width: 930px;
+  }
+
+  .channel-item {
+    background-color: #f2f2f2;
+    background-size: cover;
+    float: left;
+    height: 177px;
+    margin: 12px;
+    width: 135px;
+
+    &:hover {
+      .inner-channel {
+        display: block;
+      }
+    }
+  }
+
+  .inner-channel {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    display: none;
+    height: 100%;
+    overflow: hidden;
+    text-align: center;
+    width: 100%;
+
+    .channel-name {
+      display: block;
+      margin: 60px 0 12px;
+    }
+
+    .add-icon {
+      border: 1px solid #eee;
+      border-radius: 20px;
+      display: block;
+      font-size: 12px;
+      font-style: normal;
+      line-height: 22px;
+      margin: 0 auto;
+      width: 64px;
+    }
+  }
+
+}
