@@ -10,8 +10,8 @@ var ShowItem = React.createClass({
   clickItem: function(channel) {
     ActionCreator.getVideos(channel);
   },
-  removeChannel: function(id) {
-    ActionCreator.removeChannel(id);
+  removeChannel: function(channel) {
+    ActionCreator.removeChannel(channel);
     return false;
   },
   render() {
@@ -25,12 +25,13 @@ var ShowItem = React.createClass({
     unwatchedCount > 0 ? countClass = 'count' : countClass = 'count hide';
 
     if (updated) {
+      console.log('updated ' + channel.title);
       className += ' flash animated';
     }
 
     return (
       <li className={className} ref="item" onClick={this.clickItem.bind(this, channel)}>
-        <i className="remove-icon" onClick={this.removeChannel.bind(this, channel.channelId)}></i>
+        <i className="remove-icon" onClick={this.removeChannel.bind(this, channel)}></i>
         <span className="channel-name">{channel.title}</span>
         <span className={countClass}>{unwatchedCount}</span>
       </li>

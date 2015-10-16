@@ -31,13 +31,9 @@ var Welcome = React.createClass({
     return (
       <div className="channel-center form">
         <div className="inner-form">
-          <i className="fa fa-arrow-down fa-3"></i>
-          <i className="fa fa-arrow-down fa-3"></i>
-          <i className="fa fa-arrow-down fa-3"></i>
+          <h1 className="name" title="Yep, we don't have a logo.">Inbox.Video</h1>
+          <img className="screenshot" src="images/screenshot.png" alt="screenshot" />
           <a href="javascript:void(0)" id="signin-button" className="button button-signin" onClick={this.handleClick}></a>
-        </div>
-        <div className="fetching">
-          Fetching your subscriptions...
         </div>
       </div>
     );

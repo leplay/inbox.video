@@ -20,6 +20,7 @@ var _selectedVideoId = false;
 var _editMode = false;
 var _selectMode = false;
 var _fullScreen = false;
+var _showProfile = false;
 var _loading = true;
 var _keyword = '';
 var _refresh = {
@@ -30,12 +31,11 @@ var _refresh = {
 
 
 function addItem(channel) {
-  console.log(channel)
   var id = channel.channelId;
   var ids = _.pluck(_watchlist, 'channelId');
 
   if (ids.indexOf(id) < 0) {
-    _watchlist.push(channel);
+    _watchlist.splice(0, 0, channel);
     if (!(id in _unwatched)) {
       _unwatched[id] = [];
     }
@@ -47,6 +47,7 @@ function removeItem(id) {
   var ids = _.pluck(_watchlist, 'channelId');
   var index = ids.indexOf(id);
   _watchlist.splice(index, 1);
+  _unwatched[id] = [];
 }
 
 function markAs(videos, status) {
@@ -73,6 +74,7 @@ var HeisenbergStore = assign({}, BaseStore, {
       unwatched: _unwatched,
       videos: _videos,
       channelList: _channelList,
+      showProfile: _showProfile,
       user: _user,
       detail: _detail,
       keyword: _keyword,
@@ -90,14 +92,8 @@ var HeisenbergStore = assign({}, BaseStore, {
     var action = payload.action;
     switch(action.type) {
       case Constants.ActionTypes.ADD_CHANNEL:
-        addItem(action.channel);
-        HeisenbergStore.emitChange();
-        mixpanel.track(action.type, {id: action.channel.id, channelId: action.channel.channelId});
-        Storage.updateData('watchlist', _watchlist);
-        Storage.updateData('unwatched', _unwatched);
-        break;
-      case Constants.ActionTypes.IMPORT_CHANNELS:
         _.each(action.channelList, function(channel) {
+          delete channel['newItemCount']
           addItem(channel);
         });
         HeisenbergStore.emitChange();
@@ -110,14 +106,26 @@ var HeisenbergStore = assign({}, BaseStore, {
         HeisenbergStore.emitChange();
         mixpanel.track(action.type, {channelId: action.id});
         Storage.updateData('watchlist', _watchlist);
+        Storage.updateData('unwatched', _unwatched);
         break;
       case Constants.ActionTypes.LOAD_VIDEOS:
         _selectedVideoId = false;
         _selectMode = false;
         _detail = {};
-        console.log(_selectedChannel.channelId);
-        console.log(action.data);
-        if (_selectedChannel.channelId && _selectedChannel.channelId === action.channel.channelId) {
+        var channel = action.channel;
+        _.each(action.data, function(video) {
+          var publishedAt = new Date(video.snippet.publishedAt).getTime();
+          if (publishedAt > channel.updatedAt) {
+            var arr = _unwatched[channel.channelId];
+            arr.push(video.snippet.resourceId.videoId);
+            _unwatched[channel.channelId] = arr;
+          }
+        });
+        channel.updatedAt = new Date().getTime();
+        var index = _watchlist.indexOf(channel.channelId);
+        _watchlist[index] = channel;
+
+        if (action.next && _selectedChannel.channelId === action.channel.channelId) {
           _videos = _videos.concat(action.data);
         } else {
           _videos = action.data;
@@ -127,6 +135,8 @@ var HeisenbergStore = assign({}, BaseStore, {
         _selectedChannel.nextPageToken = action.next;
         HeisenbergStore.emitChange();
         mixpanel.track(action.type, {id: _selectedChannelId});
+        Storage.updateData('watchlist', _watchlist);
+        Storage.updateData('unwatched', _unwatched);
         break;
       case Constants.ActionTypes.LOADING:
         _loading = true;
@@ -172,7 +182,6 @@ var HeisenbergStore = assign({}, BaseStore, {
         var videoIds = action.videoIds;
         var status = action.status;
         var arr = _unwatched[channelId];
-        console.log(action);
 
         if (status === 'unwatched') {
           arr = arr.concat(videoIds);
@@ -185,7 +194,9 @@ var HeisenbergStore = assign({}, BaseStore, {
         }
         _unwatched[channelId] = arr;
         HeisenbergStore.emitChange();
-        mixpanel.track(status.toUpperCase() , {id: videoIds.join(',')});
+        if (!action.isInit) {
+          mixpanel.track(status.toUpperCase() , {id: videoIds.join(',')});
+        }
         Storage.updateData('unwatched', _unwatched);
         break;
       case Constants.ActionTypes.CREATE_IDENTITY:
@@ -195,54 +206,43 @@ var HeisenbergStore = assign({}, BaseStore, {
         _user.$last_login = now;
         _user.$name = action.name;
         _user.$identity = action.id;
+        HeisenbergStore.emitChange();
         mixpanel.identify(_user.$identity);
         mixpanel.track('PAGEVIEW');
         mixpanel.people.set(_user);
         _user.$avatar = action.avatar;
         Storage.updateData('user', _user);
         break;
-
-
-
-
-      case Constants.ActionTypes.LOAD_CHANNEL_CENTER:
-        _channelList = action.data;
-        _selectedChannelId = false;
-        _selectedVideoId = false;
-        _videos = [];
-        _detail = {};
-        _keyword = '';
-        _loading = false;
-        HeisenbergStore.emitChange();
-        mixpanel.track(action.type, {category: action.category});
-        break;
-      case Constants.ActionTypes.SEARCH:
-        _keyword = action.keyword;
-        _channelList = action.data;
-        _loading = false;
-        HeisenbergStore.emitChange();
-        mixpanel.track(action.type, {keyword: _keyword});
-        break;
       case Constants.ActionTypes.REFRESH:
-        var channel = action.data;
+        var videos = action.data;
         var index = action.index;
 
         if (index === -1) {
           _refresh.status = 0;
         } else {
           _refresh.status = 1;
-          _refresh.text = '正在更新...';
+          _refresh.text = 'Updating...';
         }
 
-        if (channel) {
-          _refresh.channelId = _watchlist[index].channelId;
+        if (videos) {
+          var lastestPublish = new Date(videos[0].snippet.publishedAt).getTime();
+          var channelId = _watchlist[index].channelId;
+          _refresh.channelId = channelId;
           _refresh.status = 1;
-          _refresh.text = '更新 ' + channel.cnName + '...';
+          _refresh.text = 'Updating ' + _watchlist[index].title.substr(0, 15) + '...';
 
-          if (channel.latestVideo !== _watchlist[index].latestVideo || channel.latestRelease !== _watchlist[index].latestRelease) {
+          if (lastestPublish > _watchlist[index].updatedAt) {
             _refresh.status = 2;
-            _watchlist[index] = channel;
+            _.find(videos, function(video) {
+              var arr = _unwatched[channelId];
+              arr.push(video.snippet.resourceId.videoId);
+              _unwatched[channelId] = arr;
+              return video.snippet.publishedAt < _watchlist[index].updatedAt;
+            });
           }
+
+          _watchlist[index].updatedAt = new Date().getTime();
+          _watchlist[index].totalItemCount = action.totalItemCount
 
           if (index === _watchlist.length) {
             _refresh.status = 0;
@@ -252,8 +252,33 @@ var HeisenbergStore = assign({}, BaseStore, {
 
         HeisenbergStore.emitChange();
         Storage.updateData('watchlist', _watchlist);
+        Storage.updateData('unwatched', _unwatched);
+        break;
+      case Constants.ActionTypes.LOAD_CHANNEL_CENTER:
+        _channelList = action.data;
+        _showProfile = false;
+        _selectedChannelId = false;
+        _selectedVideoId = false;
+        _videos = [];
+        _detail = {};
+        _keyword = '';
+        _loading = false;
+        HeisenbergStore.emitChange();
+        mixpanel.track(action.type, {category: action.category});
+        break;
+      case Constants.ActionTypes.SHOW_PROFILE:
+        _showProfile = action.bool;
+        HeisenbergStore.emitChange();
+        mixpanel.track(action.type);
         break;
 
+      case Constants.ActionTypes.SEARCH:
+        _keyword = action.keyword;
+        _channelList = action.data;
+        _loading = false;
+        HeisenbergStore.emitChange();
+        mixpanel.track(action.type, {keyword: _keyword});
+        break;
     }
   })
 

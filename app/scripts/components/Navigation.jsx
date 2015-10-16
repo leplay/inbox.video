@@ -11,13 +11,15 @@ var Navigation = React.createClass({
     };
   },
   componentDidMount: function() {
-    // ActionCreator.refresh(this.props.watchlist);
+    setTimeout(function() {
+      ActionCreator.refresh(this.props.watchlist);
+    }.bind(this), 3000);
   },
   showCenter: function() {
     ActionCreator.getChannelList();
   },
   showProfile: function() {
-    console.log('show profile');
+    ActionCreator.showProfile(true);
   },
   refresh: function() {
     ActionCreator.refresh(this.props.watchlist);
@@ -35,7 +37,7 @@ var Navigation = React.createClass({
     var {selectedChannelId} = this.props;
     var className = 'navigation';
     var refreshClass = 'fa fa-refresh fa-fw';
-    var centerText = 'Heisenberg';
+    var centerText = 'Inbox.Video';
     var editClass = '';
     var editText = 'Edit';
 
@@ -56,7 +58,7 @@ var Navigation = React.createClass({
       <div className={className}>
         <h3>Main</h3>
         <ol className="main">
-          <li className={!selectedChannelId ? "selected" : ""} onClick={this.showCenter}>Recommended</li>
+          <li className={!selectedChannelId ? "selected" : ""} onClick={this.showCenter}>Browse</li>
         </ol>
 
         <div className="watchlist">

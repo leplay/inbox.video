@@ -17,9 +17,8 @@ var Detail = React.createClass({
     ActionCreator.markAs(this.props.currentChannel.channelId, [this.props.detail.id], status);
   },
   share: function() {
-    // To be update
-    var title = '我正在银时网观看《' + this.props.currentChannel.cnName + '》，你也来吧！';
-    var url = 'http://service.weibo.com/share/share.php?url=http%3A%2F%2Fyinshi.co%3Futm_source%3Dweibo&type=button&ralateUid=5648491282&language=zh_cn&title=' + encodeURIComponent(title) + '&searchPic=false&style=simple';
+    var title = 'Inbox.Video';
+    var url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(title) + '&url=http%3A%2F%2Finbox.video%2F';
     ActionCreator.openLink(url);
   },
   clickLink: function(url) {

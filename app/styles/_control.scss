@@ -26,6 +26,16 @@
   }
   &.fullscreen-mode {
     width: 100%;
+    background-color: #252525;
+    color: #ddd;
+
+    .icon::after {
+      color: #ddd;
+    }
+    .mark-button {
+      background-color: #ccc;
+      border: 1px solid #aaa;
+    }
   }
 
 
@@ -64,6 +74,9 @@
     .fa {
       position: relative;
       top: 3px;
+      &:hover {
+        color: #666;
+      }
     }
   }
 
@@ -78,6 +91,10 @@
       height: 10px;
       width: 16px;
       margin: 14px auto;
+    }
+
+    &:hover::after {
+      border: 2px solid #666;
     }
   }
 
@@ -102,7 +119,7 @@
     height: 26px;
     line-height: 26px;
     margin: 0 6px;
-    padding: 0 18px;
+    padding: 0 8px;
     outline: none;
   }
 }

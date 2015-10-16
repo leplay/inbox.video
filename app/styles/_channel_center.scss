@@ -23,6 +23,13 @@
     display: block;
     width: 193px;
     height: 48px;
+    &::after {
+      background-image: url(../images/btn_google_pressed.png);
+      content: '';
+      width: 0;
+      height: 0;
+    }
+
     &:hover {
       background-image: url(../images/btn_google_pressed.png);
     }
@@ -33,24 +40,49 @@
   }
 
   .inner-form {
-    width: 322px;
-    margin: 300px auto 0;
+    margin: 120px auto;
     text-align: center;
-
-    input {
-      border: 1px solid #ccc;
-      font-size: 14px;
-      line-height: 32px;
-      height: 32px;
-      margin: 20px 0;
-      padding: 0 4px;
-      width: 320px;
+    .name {
+      font-weight: normal;
     }
+  }
+
+  .profile-info {
+    text-align: center;
+    display: block;
+    margin: 120px auto;
+
+    h3 {
+      margin: 12px 0;
+    }
+  }
+  &.profile {
+    .close {
+      font-size: 48px;
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      font-weight: lighter;
+      color: #666;
+      cursor: pointer;
+      font-family: Helvetica Neue, sans-serif;
+
+      &:hover {
+        color: #333;
+      }
+    }
+  }
+
+
+  .screenshot {
+    width: 760px;
+    display: block;
+    margin: 30px auto;
   }
 
   .header {
     width: 400px;
-    margin: 60px auto 0;
+    margin: 60px auto 20px;
 
     h2 {
       text-align: center;
@@ -77,22 +109,6 @@
     }
   }
 
-  .channel-nav {
-    max-width: 930px;
-    margin: 40px auto 0;
-    position: relative;
-
-    ul {
-      position: absolute;
-      right: 0;
-      top: 2px;
-
-      li {
-        float: left;
-        margin-left: 12px;
-      }
-    }
-  }
 
   .channel-list, .no-result {
     margin: 6px auto 20px;
@@ -108,9 +124,9 @@
     background-color: #f2f2f2;
     background-size: cover;
     float: left;
-    height: 177px;
+    height: 165px;
     margin: 12px;
-    width: 135px;
+    width: 294px;
 
     &:hover {
       .inner-channel {
@@ -135,13 +151,14 @@
 
     .add-icon {
       border: 1px solid #eee;
-      border-radius: 20px;
+      border-radius: 18px;
+      cursor: pointer;
       display: block;
       font-size: 12px;
       font-style: normal;
-      line-height: 22px;
+      line-height: 18px;
       margin: 0 auto;
-      width: 64px;
+      width: 70px;
     }
   }
 

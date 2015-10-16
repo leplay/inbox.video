@@ -4,10 +4,11 @@ var React = require('react');
 var ActionCreator = require('../actions/HeisenbergActionCreators');
 var ChannelItem = require('./ChannelItem.jsx');
 var Welcome = require('./Welcome.jsx');
+var Profile = require('./Profile.jsx');
 var Loading = require('./Loading.jsx');
 var Helper = require('./Helper.jsx');
 
-var type = "staffpicks";
+var type = "mostPopular";
 
 var ChannelCenter = React.createClass({
   mixin: [Loading, Helper],
@@ -16,8 +17,12 @@ var ChannelCenter = React.createClass({
       channels: []
     };
   },
-  componentWillMount: function() {
-    // ActionCreator.getChannelList(type);
+  componentDidMount: function() {
+    setTimeout(function() {
+      if (this.props.user && this.props.user.$identity) {
+        ActionCreator.getChannelList(type);
+      }
+    }.bind(this), 1000);
   },
   search: function() {
     var keyword = React.findDOMNode(this.refs.search).value;
@@ -35,21 +40,15 @@ var ChannelCenter = React.createClass({
     ActionCreator.getChannelList(type);
     React.findDOMNode(this.refs.search).value = '';
   },
-  typeMapping: {
-    'staffpicks': '编辑精选',
-    'tv': '电视剧',
-    'varity': '综艺',
-    'talkshow': '脱口秀'
-  },
   render() {
     var {user} = this.props;
+    var {showProfile} = this.props;
     var {keyword} = this.props;
     var {loading} = this.props;
     var {channels} = this.props;
     var {fullScreen} = this.props;
     var {isSelectedChannel} = this.props;
     var {isSelectedVideo} = this.props;
-    var columnTitle = this.typeMapping[type];
     var className = !isSelectedChannel && !fullScreen ? "channel-center" : "channel-center hide";
     var listClass = 'channel-list';
     var noResultClass = 'no-result hide';
@@ -59,30 +58,22 @@ var ChannelCenter = React.createClass({
     }
 
     if (keyword) {
-      columnTitle = '搜索「' + keyword + '」的结果'
+      columnTitle = 'Results for ' + keyword;
     }
 
     if (!channels.length && !loading) {
       noResultClass = 'no-result';
     }
 
-    if (!isSelectedChannel && user.$identity) {
+    if (!isSelectedChannel && user.$identity && !showProfile) {
       return (
         <div className={className}>
           <div className="header">
-            <h2>Heisenberg</h2>
-            <form className="search-form">
-              <input ref="search" type="text" onKeyDown={this.onKeyDown} defaultValue={keyword} placeholder="请输入剧集名称" />
-              <a href="javascript:void(0)" className="button button-search" onClick={this.search}>搜索</a>
+            <h2>Inbox.Video</h2>
+            <form className="search-form hide">
+              <input ref="search" type="text" onKeyDown={this.onKeyDown} defaultValue={keyword} placeholder="" />
+              <a href="javascript:void(0)" className="button button-search" onClick={this.search}>Search</a>
             </form>
-          </div>
-          <div className="channel-nav">
-            <h3>{columnTitle}</h3>
-            <ul>
-              <li><a href="javascript:void(0)" onClick={this.loadCenter.bind(this, 'tv')}>{this.typeMapping['tv']}</a></li>
-              <li><a href="javascript:void(0)" onClick={this.loadCenter.bind(this, 'varity')}>{this.typeMapping['varity']}</a></li>
-              <li><a href="javascript:void(0)" onClick={this.loadCenter.bind(this, 'talkshow')}>{this.typeMapping['talkshow']}</a></li>
-            </ul>
           </div>
           <ol className={listClass}>
           {channels.map(channel =>
@@ -90,7 +81,7 @@ var ChannelCenter = React.createClass({
           )}
           </ol>
           <div className={noResultClass}>
-            对不起，暂时没有剧集信息。<a href="javascript:void(0)" onClick={this.loadCenter.bind(this, 'staffpicks')}>返回</a>
+            Sorry, no results.<a href="javascript:void(0)" onClick={this.loadCenter.bind(this, 'staffpicks')}>Back</a>
           </div>
           <Loading display={loading} />
           <Helper />
@@ -98,6 +89,8 @@ var ChannelCenter = React.createClass({
       );
     } else if (!isSelectedChannel && !user.$identity) {
       return <Welcome />
+    } else if (!isSelectedChannel && showProfile) {
+      return <Profile user={user} />
     } else {
       return (
         <div className="channel-center hide" />

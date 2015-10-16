@@ -8,20 +8,20 @@ var ShowItem = React.createClass({
     channel: React.PropTypes.object.isRequired
   },
   handleClick(id) {
-    ActionCreator.addToWatchlist(id);
+    ActionCreator.subscribe(id);
   },
   render() {
     var {channel} = this.props;
     var {isSelected} = this.props;
     var style = {
-      'backgroundImage' : 'url(' + channel.cover + ')' 
+      'backgroundImage' : 'url(' + channel.snippet.thumbnails.medium.url + ')' 
     };
 
     return (
-      <li className="channel-item" style={style} onClick={this.handleClick.bind(this, channel.channelId)}>
+      <li className="channel-item" style={style} onClick={this.handleClick.bind(this, channel.snippet.channelId)}>
         <div className="inner-channel">
-          <span className="channel-name">{channel.cnName}</span>
-          <span className="add-icon">添加</span>
+          <span className="channel-name">{channel.snippet.channelTitle}</span>
+          <span className="add-icon">Subscribe</span>
         </div>
       </li>
     );

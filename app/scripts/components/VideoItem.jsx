@@ -32,7 +32,7 @@ var videoItem = React.createClass({
       <li className={className}>
         <input className={checkboxClass} value={video.snippet.resourceId.videoId} type="checkbox" />
         <div className="block" onClick={this.clickVideo.bind(this, video.snippet.resourceId.videoId)}>
-          <p className="video-title">{video.snippet.title.length > 66 ? video.snippet.title.substr(0, 66) + '...' : video.snippet.title}</p>
+          <p className="video-title">{video.snippet.title.length > 56 ? video.snippet.title.substr(0, 56) + '...' : video.snippet.title}</p>
           <span className="update-date">{updateTime}</span>
         </div>
       </li>

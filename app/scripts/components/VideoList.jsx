@@ -1,13 +1,14 @@
 'use strict';
 
 var React = require('react');
-var ActionCreator = require('../actions/HeisenbergActionCreators');
-var VideoItem = require('./VideoItem.jsx');
 var $ = require('jquery');
 var _ = require('underscore');
+var VideoItem = require('./VideoItem.jsx');
+var ActionCreator = require('../actions/HeisenbergActionCreators');
 
 var channelId;
 var videoIds = [];
+var selectAll = false;
 
 var VideoList = React.createClass({
   getDefaultProps() {
@@ -43,6 +44,7 @@ var VideoList = React.createClass({
   toggleSelectMode: function() {
     if (!this.props.selectMode) {
       $('.checkbox').prop('checked', false);
+      videoIds = [];
     }
     ActionCreator.toggleSelectMode();
     _.each(this.props.videos, function(video) {
@@ -50,12 +52,11 @@ var VideoList = React.createClass({
     });
   },
   selectAll: function() {
+    selectAll = !selectAll;
     var arr = new Array(this.props.videos.length);
     _.each(arr, function(item, index) {
       var value = videoIds[index];
-      console.log(videoIds)
-      console.log(value)
-      $('.checkbox[value=' + value + ']').prop('checked', true);
+      $('.checkbox[value=' + value + ']').prop('checked', selectAll);
     });
   },
   markAs: function(status) {

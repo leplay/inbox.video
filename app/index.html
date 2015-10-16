@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<!-- <html manifest="/cache.manifest"> -->
+<html manifest="/cache.manifest">
 <head>
   <meta charset="UTF-8">
-  <title>Heisenberg</title>
+  <title>Inbox.Video</title>
+  <meta name="keywords" content="watch,manage,video,subscription,channel,youtube" />
+  <meta name="description" content="Watch and manage your videos at Inbox.Video" />
   <link rel="stylesheet" href="styles/main.css">
   <script src="https://apis.google.com/js/api:client.js"></script>
 </head>
@@ -18,10 +20,11 @@
   var user = JSON.parse(localStorage.getItem('user'));
   if (user && user.$identity) {
     user.$last_login = new Date();
+    localStorage.setItem('user', JSON.stringify(user));
     mixpanel.identify(user.$identity);
+    delete user.$avatar;
     mixpanel.people.set(user);
     mixpanel.track('PAGEVIEW');
-    localStorage.setItem('user', JSON.stringify(user));
   }
   window.onbeforeunload = function () {
     mixpanel.track('LEAVE');
