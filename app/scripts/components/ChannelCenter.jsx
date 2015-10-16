@@ -50,6 +50,7 @@ var ChannelCenter = React.createClass({
     var {isSelectedChannel} = this.props;
     var {isSelectedVideo} = this.props;
     var className = !isSelectedChannel && !fullScreen ? "channel-center" : "channel-center hide";
+    var columnTitle;
     var listClass = 'channel-list';
     var noResultClass = 'no-result hide';
 
@@ -59,6 +60,7 @@ var ChannelCenter = React.createClass({
 
     if (keyword) {
       columnTitle = 'Results for ' + keyword;
+      className += ' search';
     }
 
     if (!channels.length && !loading) {
@@ -70,10 +72,13 @@ var ChannelCenter = React.createClass({
         <div className={className}>
           <div className="header">
             <h2>Inbox.Video</h2>
-            <form className="search-form hide">
-              <input ref="search" type="text" onKeyDown={this.onKeyDown} defaultValue={keyword} placeholder="" />
+            <form className="search-form">
+              <input ref="search" type="text" onKeyDown={this.onKeyDown} defaultValue={keyword} placeholder="Search channels" />
               <a href="javascript:void(0)" className="button button-search" onClick={this.search}>Search</a>
             </form>
+          </div>
+          <div className="channel-nav">
+            <h3>{columnTitle}</h3>
           </div>
           <ol className={listClass}>
           {channels.map(channel =>

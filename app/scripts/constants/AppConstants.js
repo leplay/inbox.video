@@ -27,7 +27,7 @@ module.exports = {
     CHANNEL: 'https://www.googleapis.com/youtube/v3/channels',
     VIDEO: 'https://www.googleapis.com/youtube/v3/videos',
     PLAYLIST: 'https://www.googleapis.com/youtube/v3/playlistItems',
-    SEARCH: 'http://app.yinshi.co/api/v1/search/',
+    SEARCH: 'https://www.googleapis.com/youtube/v3/search',
     SUBSCRIPTIONS: 'https://www.googleapis.com/youtube/v3/subscriptions'
   },
   AuthObj: {

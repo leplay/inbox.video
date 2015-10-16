@@ -17,12 +17,19 @@ module.exports = {
       type: Constants.ActionTypes.LOADING,
       category: 'SEARCH'
     });
+
+    var access_token = token.id;
+    var data = {
+      'part': 'snippet',
+      'type': 'channel',
+      'q': keyword,
+      'maxResults': 48,
+      'access_token': access_token
+    };
+
     $.ajax({
-      url: Constants.ActionUrls.SEARCH + keyword,
-      dataType: 'json',
-      data: {
-        field: 'id,channelId,cnName,cover,totalCount'
-      },
+      url: Constants.ActionUrls.SEARCH,
+      data: data,
       xhrFields: {
         withCredentials: true
       }
@@ -31,7 +38,7 @@ module.exports = {
         AppDispatcher.handleViewAction({
           type: Constants.ActionTypes.SEARCH,
           keyword: keyword,
-          data: resp
+          data: resp.items
         });
       } else {
         console.log('ajax error');

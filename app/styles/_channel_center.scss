@@ -109,6 +109,11 @@
     }
   }
 
+  .channel-nav {
+    max-width: 930px;
+    margin: 40px auto 0;
+    position: relative;
+  }
 
   .channel-list, .no-result {
     margin: 6px auto 20px;
@@ -161,5 +166,18 @@
       width: 70px;
     }
   }
+
+
+  &.search {
+    .channel-item {
+      height: 294px;
+    }
+
+    .channel-name {
+      display: block;
+      margin: 122px 0 12px;
+    }
+  }
+
 
 }
