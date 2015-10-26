@@ -8,6 +8,7 @@ var Welcome = React.createClass({
   handleAuthResult: function() {
     setTimeout(function() {
       ActionCreator.fetchSubscriptions();
+      ActionCreator.initLikesPlaylist();
     }, 2000);
   },
   handleClick: function() {
@@ -21,8 +22,8 @@ var Welcome = React.createClass({
           avatar: profile.getImageUrl(),
           id: profile.getId()
         };
-        ActionCreator.createIdentity(obj);
         ActionCreator.getToken();
+        ActionCreator.createIdentity(obj);
         this.handleAuthResult();
       }.bind(this));
     }.bind(this));

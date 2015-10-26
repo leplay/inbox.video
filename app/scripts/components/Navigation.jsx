@@ -11,15 +11,24 @@ var Navigation = React.createClass({
     };
   },
   componentDidMount: function() {
-    setTimeout(function() {
-      ActionCreator.refresh(this.props.watchlist);
-    }.bind(this), 3000);
+    if (this.props.user.$identity) {
+      setTimeout(function() {
+        ActionCreator.refresh(this.props.watchlist);
+      }.bind(this), 3000);
+    }
   },
-  showCenter: function() {
-    ActionCreator.getChannelList();
-  },
-  showProfile: function() {
-    ActionCreator.showProfile(true);
+  switchTab: function(tab) {
+    switch(tab) {
+    case 'browse':
+      ActionCreator.getChannelList();
+      break;
+    case 'likes':
+      ActionCreator.showLikes(this.props.likes);
+      break;
+    case 'profile':
+      ActionCreator.showProfile(true);
+      break;
+    }
   },
   refresh: function() {
     ActionCreator.refresh(this.props.watchlist);
@@ -31,6 +40,7 @@ var Navigation = React.createClass({
     var {watchlist} = this.props;
     var {unwatched} = this.props;
     var {user} = this.props;
+    var {likes} = this.props;
     var {editMode} = this.props;
     var {fullScreen} = this.props;
     var {refresh} = this.props;
@@ -41,7 +51,7 @@ var Navigation = React.createClass({
     var editClass = '';
     var editText = 'Edit';
 
-    if (fullScreen || !user.$name) {
+    if (fullScreen) {
       className = "navigation hide";
     }
 
@@ -58,7 +68,8 @@ var Navigation = React.createClass({
       <div className={className}>
         <h3>Main</h3>
         <ol className="main">
-          <li className={!selectedChannelId ? "selected" : ""} onClick={this.showCenter}>Browse</li>
+          <li className={selectedChannelId === 'browse' ? 'selected' : ''} onClick={this.switchTab.bind(this, 'browse')}>Browse</li>
+          <li className={selectedChannelId === likes.channelId ? 'selected' : ''} onClick={this.switchTab.bind(this, 'likes')}>Likes</li>
         </ol>
 
         <div className="watchlist">
@@ -73,9 +84,9 @@ var Navigation = React.createClass({
         </div>
 
         <div className="control navigation-control">
-          <span className="icon icon-profile" onClick={this.showProfile}><img src={user.$avatar} alt="profile" /></span>
+          <span className={user.$avatar ? 'icon icon-profile' : 'icon icon-profile hide'} onClick={this.switchTab.bind(this, 'profile')}><img src={user.$avatar} alt="profile" /></span>
           <span className="logo">{centerText}</span>
-          <span className="icon icon-setting" onClick={this.refresh}><i className={refreshClass}></i></span>
+          <span className={watchlist.length ? 'icon icon-setting' : 'icon icon-setting hide'} onClick={this.refresh}><i className={refreshClass}></i></span>
         </div>
       </div>
     );

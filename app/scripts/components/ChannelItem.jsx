@@ -12,7 +12,6 @@ var ShowItem = React.createClass({
   },
   render() {
     var {channel} = this.props;
-    var {isSelected} = this.props;
     var style = {
       'backgroundImage' : 'url(' + channel.snippet.thumbnails.medium.url + ')' 
     };

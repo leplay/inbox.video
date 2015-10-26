@@ -42,14 +42,20 @@ var ChannelCenter = React.createClass({
   },
   render() {
     var {user} = this.props;
-    var {showProfile} = this.props;
     var {keyword} = this.props;
     var {loading} = this.props;
     var {channels} = this.props;
     var {fullScreen} = this.props;
-    var {isSelectedChannel} = this.props;
+    var {selectedChannelId} = this.props;
     var {isSelectedVideo} = this.props;
-    var className = !isSelectedChannel && !fullScreen ? "channel-center" : "channel-center hide";
+    var showChannelCenter = false;
+    var showProfile = selectedChannelId === 'profile' ? true : false;
+
+    if (selectedChannelId === 'browse' || selectedChannelId === 'Likes' || selectedChannelId === 'profile') {
+      showChannelCenter = true;
+    }
+
+    var className = showChannelCenter && !fullScreen ? "channel-center" : "channel-center hide";
     var columnTitle;
     var listClass = 'channel-list';
     var noResultClass = 'no-result hide';
@@ -67,7 +73,7 @@ var ChannelCenter = React.createClass({
       noResultClass = 'no-result';
     }
 
-    if (!isSelectedChannel && user.$identity && !showProfile) {
+    if (showChannelCenter && user.$identity && !showProfile) {
       return (
         <div className={className}>
           <div className="header">
@@ -82,19 +88,19 @@ var ChannelCenter = React.createClass({
           </div>
           <ol className={listClass}>
           {channels.map(channel =>
-            <ChannelItem channel={channel} isSelected={!isSelectedChannel} />
+            <ChannelItem channel={channel} />
           )}
           </ol>
           <div className={noResultClass}>
-            Sorry, no results.<a href="javascript:void(0)" onClick={this.loadCenter.bind(this, 'staffpicks')}>Back</a>
+            Sorry, no results.<a href="javascript:void(0)" onClick={this.loadCenter.bind(this, 'mostPopular')}>Back</a>
           </div>
           <Loading display={loading} />
           <Helper />
         </div>
       );
-    } else if (!isSelectedChannel && !user.$identity) {
+    } else if (showChannelCenter && !user.$identity) {
       return <Welcome />
-    } else if (!isSelectedChannel && showProfile) {
+    } else if (showChannelCenter && showProfile) {
       return <Profile user={user} />
     } else {
       return (

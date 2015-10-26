@@ -16,6 +16,9 @@ var Detail = React.createClass({
   handleMark: function(status) {
     ActionCreator.markAs(this.props.currentChannel.channelId, [this.props.detail.id], status);
   },
+  like: function() {
+    ActionCreator.like(this.props.detail, this.props.likes);
+  },
   share: function() {
     var title = 'Inbox.Video';
     var url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(title) + '&url=http%3A%2F%2Finbox.video%2F';
@@ -32,6 +35,7 @@ var Detail = React.createClass({
   },
   render() {
     var {detail} = this.props;
+    var {likes} = this.props;
     var {isWatched} = this.props;
     var {isSelectedChannel} = this.props;
     var {currentChannel} = this.props;
@@ -47,7 +51,11 @@ var Detail = React.createClass({
     var className;
     var tipsClass = 'tips';
     var controlClass = 'control detail-control';
+    var likeClass = 'fa fa-heart-o';
 
+    if (detail.id in likes.videos) {
+      likeClass = 'fa fa-heart';
+    }
 
     if (isSelectedChannel && isSelectedVideo) {
       className = 'detail with-bg';
@@ -81,7 +89,7 @@ var Detail = React.createClass({
            <button className="mark-button" onClick={this.handleMark.bind(this, 'watched')}>Watched</button>
            <button className="mark-button" onClick={this.handleMark.bind(this, 'unwatched')}>Unwatched</button>
           </div>
-          <span className="icon icon-share" onClick={this.share}><i className="fa fa-share-square-o"></i></span>
+          <span className="icon icon-like" onClick={this.like}><i className={likeClass}></i></span>
         </div>
         <div className={tipsClass}>
           <p>Made with <i className="fa fa-heartbeat fa-fw"></i> by Leplay. <a href="javascript:void(0)" onClick={this.clickLink.bind(this, 'https://twitter.com/leplay_')}>Follow me on twitter</a> or <a href="javascript:void(0)" onClick={this.donate}>make a donation</a>.</p>
