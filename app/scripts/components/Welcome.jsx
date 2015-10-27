@@ -33,7 +33,13 @@ var Welcome = React.createClass({
       <div className="channel-center form">
         <div className="inner-form">
           <h1 className="name" title="Yep, we don't have a logo.">Inbox.Video</h1>
-          <img className="screenshot" src="images/screenshot.png" alt="screenshot" />
+          <ul className="feature-list">
+            <li>Watch status for every single video</li>
+            <li>Manage subscriptions</li>
+            <li>Like a video</li>
+            <li>Sync to Youtube</li>
+            <li>Super fast</li>
+          </ul>
           <a href="javascript:void(0)" id="signin-button" className="button button-signin" onClick={this.handleClick}></a>
         </div>
       </div>

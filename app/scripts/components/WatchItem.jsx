@@ -25,7 +25,7 @@ var ShowItem = React.createClass({
     unwatchedCount > 0 ? countClass = 'count' : countClass = 'count hide';
 
     if (updated) {
-      console.log('updated ' + channel.title);
+      // console.log('updated ' + channel.title);
       className += ' flash animated';
     }
 

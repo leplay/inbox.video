@@ -18,16 +18,18 @@ var Navigation = React.createClass({
     }
   },
   switchTab: function(tab) {
-    switch(tab) {
-    case 'browse':
-      ActionCreator.getChannelList();
-      break;
-    case 'likes':
-      ActionCreator.showLikes(this.props.likes);
-      break;
-    case 'profile':
-      ActionCreator.showProfile(true);
-      break;
+    if (this.props.user.$identity) {
+      switch(tab) {
+      case 'browse':
+        ActionCreator.getChannelList();
+        break;
+      case 'likes':
+        ActionCreator.showLikes(this.props.likes);
+        break;
+      case 'profile':
+        ActionCreator.showProfile(true);
+        break;
+      }
     }
   },
   refresh: function() {

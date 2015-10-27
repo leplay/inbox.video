@@ -21,7 +21,6 @@ var VideoList = React.createClass({
     var lastId;
     $('.videos').on('click', '.checkbox', function(e){
       var id = $(this).val();
-      console.log(id);
       if (e.shiftKey && lastId) {
         var start = videoIds.indexOf(id);
         var end = videoIds.indexOf(lastId);
@@ -73,11 +72,12 @@ var VideoList = React.createClass({
   render() {
     var {videos} = this.props;
     var {unwatchedItems} = this.props;
+    var {selectedChannelId} = this.props;
     var {selectedVideoId} = this.props;
     var {selectMode} = this.props;
     var {fullScreen} = this.props;
     var {currentChannel} = this.props;
-    var className = videos.length && !fullScreen ? "videos" : "videos hide";
+    var className = selectedChannelId.length > 10 && !fullScreen ? "videos" : "videos hide";
     var selectCopy = 'Select';
     var countClass;
     var markClass;
@@ -108,6 +108,9 @@ var VideoList = React.createClass({
             <VideoItem video={video} currentChannel={currentChannel.title} selectMode={selectMode} selectedVideoId={selectedVideoId} isWatched={unwatchedItems.indexOf(video.snippet.resourceId.videoId) < 0} />
           )}
         </ol>
+        <div className={!videos.length ? 'no-video-tip' : 'no-video-tip hide'}>
+          No video in list.
+        </div>
         <div className={loadMoreClass} onClick={this.loadMore.bind(this, currentChannel.nextPageToken)}>LOAD MORE</div>
         <div className="control videos-control">
             <span className="select-mode" onClick={this.toggleSelectMode}>{selectCopy}</span>

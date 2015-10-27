@@ -5,7 +5,7 @@
   overflow-y: auto;
 
   .button {
-    background-color: #7bc1b9;
+    background-color: #cd201f;
     color: #fff;
     display: block;
     line-height: 32px;
@@ -40,10 +40,16 @@
   }
 
   .inner-form {
+    color: #666;
     margin: 120px auto;
     text-align: center;
     .name {
+      color: #333;
       font-weight: normal;
+    }
+
+    .feature-list {
+      margin: 30px auto;
     }
   }
 
@@ -93,7 +99,7 @@
       overflow: hidden;
 
       input {
-        border: 1px solid #ccc;
+        border: 1px solid #aaa;
         float: left;
         height: 30px;
         line-height: 30px;
