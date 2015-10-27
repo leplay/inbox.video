@@ -10,7 +10,7 @@ var param = parseInt(QueryString.query('god'));
 var Player = React.createClass({
   componentWillUpdate: function(nextProps, nextState) {
     var url = nextProps.url;
-    if (targetUrl !== url) {
+    if (url && targetUrl !== url) {
       var container = React.findDOMNode(this.refs.player);
       var beforePlay = React.findDOMNode(this.refs.beforePlay);
       container.className = 'invisible';

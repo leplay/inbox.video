@@ -115,19 +115,29 @@ var HeisenbergStore = assign({}, BaseStore, {
         var channel = action.channel;
         var data = action.data;
         var isLikesPage = channel.channelId === _likes.channelId;
+        if (isLikesPage && data.items.length === data.pageInfo.totalResults) {
+          _likes.videos = {};
+        }
 
         _.each(data.items, function(video) {
           var publishedAt = new Date(video.snippet.publishedAt).getTime();
-          if (publishedAt > channel.updatedAt && isLikesPage) {
-            var arr = _unwatched[channel.channelId];
-            arr.push(video.snippet.resourceId.videoId);
-            _unwatched[channel.channelId] = arr;
+          if (isLikesPage) {
+            _likes.videos[video.snippet.resourceId.videoId] = video.id;
+          } else {
+            if (publishedAt > channel.updatedAt) {
+              var arr = _unwatched[channel.channelId];
+              arr.push(video.snippet.resourceId.videoId);
+              _unwatched[channel.channelId] = arr;
+            }
           }
         });
         channel.updatedAt = new Date().getTime();
         channel.totalItemCount = data.pageInfo.totalResults;
-        var index = _watchlist.indexOf(channel.channelId);
-        _watchlist[index] = channel;
+
+        if (!isLikesPage) {
+          var index = _watchlist.indexOf(channel.channelId);
+          _watchlist[index] = channel;            
+        }
 
         if (data.nextPageToken && _selectedChannel.channelId === action.channel.channelId) {
           _videos = _videos.concat(data.items);
@@ -139,6 +149,7 @@ var HeisenbergStore = assign({}, BaseStore, {
         _selectedChannel.nextPageToken = data.nextPageToken;
         HeisenbergStore.emitChange();
         mixpanel.track(action.type, {id: _selectedChannelId});
+        Storage.updateData('likes', _likes);
         Storage.updateData('watchlist', _watchlist);
         Storage.updateData('unwatched', _unwatched);
         break;

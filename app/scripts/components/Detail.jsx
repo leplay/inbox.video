@@ -46,8 +46,8 @@ var Detail = React.createClass({
     var description = detail.snippet ? detail.snippet.description : '';
 
     var isSelectedVideo = !!detail.id;
-    var url = ActionCreator.generatePlayerUrl(detail.id);
-    var playerUrl = ActionCreator.generatePlayerUrl(detail.id, 1);
+    var url = detail.id ? ActionCreator.generatePlayerUrl(detail.id) : '';
+    var playerUrl = detail.id ? ActionCreator.generatePlayerUrl(detail.id, 1) : '';
 
     var className;
     var tipsClass = 'tips';
