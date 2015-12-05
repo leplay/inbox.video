@@ -84,9 +84,12 @@ var VideoList = React.createClass({
     var listClass;
     var loadMoreClass = videos.length === parseInt(currentChannel.totalItemCount) ? 'load-more hide' : 'load-more';
     var selectAllClass = 'select-all';
-    var statusStyle = {
-      backgroundImage: 'url(' + currentChannel.thumbnail + ')'
-    };
+    var statusStyle = {};
+    if (currentChannel.thumbnail) {
+      statusStyle = {
+        backgroundImage: 'url(' + currentChannel.thumbnail + ')'
+      };
+    }
 
     channelId = currentChannel.channelId;
     if (selectMode) {
