@@ -1,0 +1,88 @@
+@import "./normalize";
+@import "./font-awesome";
+@import "./animation";
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  box-sizing: border-box;
+  color: #333;
+  cursor: default;
+  font: 13px/18px Roboto, arial, sans-serif;
+  background-color: #fff;
+}
+
+ol, ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, p {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: #2793e8;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.hide {
+  display: none;
+}
+.invisible {
+  visibility: hidden;
+}
+
+#main, .heisenberg-app {
+  height: 100%;
+  overflow: hidden;
+}
+
+.navigation, .videos {
+  border-right: 1px solid #ddd;
+  box-sizing: border-box;
+  float: left;
+  height: 100%;
+  position: relative;
+  width: 241px;
+}
+
+.loading {
+  color: #999;
+  margin-top: 120px;
+  min-height: 64px;
+  text-align: center;
+}
+
+.help-icon {
+  color: #ddd;
+  cursor: pointer;
+  font-size: 24px;
+  line-height: 24px;
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  width: 24px;
+
+  &:hover {
+    color: #999;
+  }
+}
+
+
+
+@import "./control";
+@import "./navigation";
+@import "./channel_center";
+@import "./videos";
+@import "./detail";
+

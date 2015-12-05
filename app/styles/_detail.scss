@@ -1,0 +1,149 @@
+.detail {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100%;
+
+  &.with-bg {
+    /*background: url(../images/logo.png) #fff no-repeat center center;*/
+    .tips {
+      margin: 40px auto 80px;  
+    }
+  }
+
+  .content {
+    background: #fff;
+    margin: 0 auto;
+    max-width: 700px;
+    min-height: calc(100% - 60px);
+    min-width: 600px;
+    overflow: hidden;
+    padding: 20px 20px 40px;
+  }
+
+  .detail-name {
+    margin: 16px 0 10px;
+  }
+
+  .update-date {
+    color: #999;
+    display: inline-block;
+    font-size: 12px;
+    position: relative;
+    margin-bottom: 36px;
+
+    &.unwatched::after {
+      content: "";
+      border-radius: 50%;
+      background-color: #2793e8;
+      width: 8px;
+      height: 8px;
+      position: absolute;
+      right: -16px;
+      top: 5px;
+    }
+  }
+
+  .description {
+    color: #666;
+    margin: 24px 0;
+
+    .description-text {
+      font: 13px/15px Roboto, arial, sans-serif;
+      overflow: hidden;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  }
+
+  .source {
+    margin: 24px 0;
+  }
+
+  &.not-select-video {
+    .content, .control {
+      display: none;
+    }
+
+  }
+
+  .tips {
+    border: 1px dashed #ccc;
+    box-sizing: border-box;
+    font-size: 16px;
+    line-height: 24px;
+    margin: 240px auto;
+    padding: 20px;
+    text-align: center;
+    width: 700px;
+  }
+}
+
+.player-container {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+
+  iframe {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    min-height: 500px;
+    width: 100%;
+  }
+
+  .before-play {
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+  }
+  .icon-loading {
+    display: inline-block;
+    margin-top: 218px;
+  }
+
+  .unavailable {
+    background-color: #fff;
+    color: #666;
+    cursor: pointer;
+    border: 2px dashed #ddd;
+    font-size: 16px;
+    text-align: center;
+    line-height: 120px;
+    height: 120px;
+    .fa {
+      margin-right: 6px;
+    }
+    &:hover {
+      background-color: #f1f1f1;
+    }
+  }
+}
+
+#player {
+  height: 100%;
+  width: 100%;
+}
+
+.fullscreen {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: calc(100% - 40px);
+  z-index: 9;
+
+  embed {
+    min-height: 300px;
+  }
+}
+
+.fa-heartbeat {
+  color: #cd201f;
+}
