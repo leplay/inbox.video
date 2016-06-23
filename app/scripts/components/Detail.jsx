@@ -93,7 +93,7 @@ var Detail = React.createClass({
           <span className="icon icon-like" onClick={this.like}><i className={likeClass}></i></span>
         </div>
         <div className={tipsClass}>
-          <p>Made with <i className="fa fa-heartbeat fa-fw"></i> by <a href="javascript:void(0)" onClick={this.clickLink.bind(this, 'https://twitter.com/leplay_')}>Leplay</a> in Beijing. Checkout my latest project - <a href="javascript:void(0)" onClick={this.clickLink.bind(this, 'https://timelize.co/')}>Timelize</a></p>
+          <p>Made with <i className="fa fa-heartbeat fa-fw"></i> by <a href="javascript:void(0)" onClick={this.clickLink.bind(this, 'http://leplay.net/')}>Leplay</a> in Beijing.</p>
 
         </div>
       </div>
