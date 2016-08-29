@@ -21,6 +21,9 @@ var likesPlaylist = {
 };
 
 module.exports = {
+  isPlaylist: function(str) {
+    return _.contains(['browse', 'likes', 'picks'], str);
+  },
   search: function(keyword) {
     AppDispatcher.handleViewAction({
       type: Constants.ActionTypes.LOADING,
@@ -455,7 +458,6 @@ module.exports = {
   },
   savePlaylist: function(data) {
     var obj = {};
-    obj.channelId = data.snippet.channelId;
     obj.playlistId = data.id;
     obj.provider = 'youtube';
     obj.totalItemCount = data.contentDetails.itemCount;
@@ -496,8 +498,45 @@ module.exports = {
       type: Constants.ActionTypes.SHOW_PAGE,
       page: 'likes'
     });
-
+    console.log(data);
     this.getVideos(data);
+  },
+  showPlaylist: function(id) {
+    AppDispatcher.handleViewAction({
+      type: Constants.ActionTypes.SHOW_PAGE,
+      page: 'picks'
+    });
+
+    var access_token = token.id;
+    var data = {
+      'part': 'snippet,contentDetails',
+      'maxResults': 15,
+      'id': id,
+      'access_token': access_token
+    };
+
+    $.ajax({
+      url: Constants.ActionUrls.PLAYLIST,
+      data: data,
+      xhrFields: {
+        withCredentials: true
+      }
+    }).done(function(resp) {
+      if (resp) {
+        console.log(resp);
+        var data = resp.items[0];
+        var obj = {};
+        obj.playlistId = data.id;
+        obj.provider = 'youtube';
+        obj.totalItemCount = data.contentDetails.itemCount;
+        obj.title = data.snippet.title;
+        obj.description = data.snippet.description;
+        obj.updatedAt = new Date().getTime();
+        this.getVideos(obj);
+      } else {
+        console.log('ajax error');
+      }
+    }.bind(this));
   },
   like: function(detail, likes) {
     var access_token = token.id;

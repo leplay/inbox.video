@@ -34,9 +34,12 @@ module.exports = {
     SUBSCRIPTIONS: 'https://www.googleapis.com/youtube/v3/subscriptions'
   },
   AuthObj: {
-    client_id: '',
+    client_id: '209892630468-q7ame617vlsif6nir4786u8k85dg2oug.apps.googleusercontent.com',
     cookiepolicy: 'single_host_origin',
     immediate: true,
     scope: 'https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtubepartner https://www.googleapis.com/auth/youtube'
+  },
+  PlaylistIds: {
+    PICKS: 'PLhhVV86ei7EksrFcimtj28H7JVtePqlg1'
   }
 };

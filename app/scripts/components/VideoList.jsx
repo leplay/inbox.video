@@ -77,7 +77,8 @@ var VideoList = React.createClass({
     var {selectMode} = this.props;
     var {fullScreen} = this.props;
     var {currentChannel} = this.props;
-    var className = selectedChannelId.length > 10 && !fullScreen ? "videos" : "videos hide";
+    var isPlaylist = ActionCreator.isPlaylist(selectedChannelId);
+    var className = 'videos';
     var selectCopy = 'Select';
     var countClass;
     var markClass;
@@ -89,6 +90,10 @@ var VideoList = React.createClass({
       statusStyle = {
         backgroundImage: 'url(' + currentChannel.thumbnail + ')'
       };
+    }
+
+    if (!selectedChannelId || selectedChannelId === 'browse' || fullScreen) {
+      className += ' hide';
     }
 
     channelId = currentChannel.channelId;
@@ -108,7 +113,7 @@ var VideoList = React.createClass({
         </div>
         <ol className={listClass}>
           {videos.map(video =>
-            <VideoItem video={video} currentChannel={currentChannel.title} selectMode={selectMode} selectedVideoId={selectedVideoId} isWatched={unwatchedItems.indexOf(video.snippet.resourceId.videoId) < 0} />
+            <VideoItem video={video} currentChannel={currentChannel.title} selectMode={selectMode} selectedVideoId={selectedVideoId} isWatched={!isPlaylist ? unwatchedItems.indexOf(video.snippet.resourceId.videoId) < 0 : true} />
           )}
         </ol>
         <div className={!videos.length ? 'no-video-tip' : 'no-video-tip hide'}>

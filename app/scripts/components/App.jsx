@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react');
+var _ = require('underscore');
 var HeisenbergStore = require('../stores/HeisenbergStore');
 var ActionCreator = require('../actions/HeisenbergActionCreators');
 var Navigation = require('./Navigation.jsx');
@@ -56,11 +57,18 @@ var App = React.createClass({
     HeisenbergStore.removeChangeListener(this._onChange);
   },
   render() {
+    var selectedChannelId = this.state.selectedChannelId;
+    var selectedVideoId = this.state.selectedVideoId;
+    var isPlaylist = ActionCreator.isPlaylist(selectedChannelId);
+    var isWatched = true;
+    if (selectedChannelId && !isPlaylist) {
+      isWatched = this.state.unwatched[selectedChannelId].indexOf(selectedVideoId) < 0;
+    }
     return (
       <div className="heisenberg-app">
         <Navigation watchlist={this.state.watchlist} unwatched={this.state.unwatched} likes={this.state.likes} selectedChannelId={this.state.selectedChannelId} fullScreen={this.state.fullScreen} editMode={this.state.editMode} refresh={this.state.refresh} user={this.state.user} />
         <VideoList videos={this.state.videos} unwatchedItems={this.state.unwatched[this.state.selectedChannelId]} selectedChannelId={this.state.selectedChannelId} selectedVideoId={this.state.selectedVideoId} fullScreen={this.state.fullScreen} currentChannel={this.state.selectedChannel} selectMode={this.state.selectMode} />
-        <Detail detail={this.state.detail} likes={this.state.likes} isWatched={this.state.selectedVideoId ? this.state.unwatched[this.state.selectedChannelId].indexOf(this.state.selectedVideoId) < 0 : false} selectedChannelId={this.state.selectedChannelId} fullScreen={this.state.fullScreen} currentChannel={this.state.selectedChannel} />
+        <Detail detail={this.state.detail} likes={this.state.likes} isWatched={isWatched} selectedChannelId={this.state.selectedChannelId} fullScreen={this.state.fullScreen} currentChannel={this.state.selectedChannel} />
         <ChannelCenter keyword={this.state.keyword} user={this.state.user} loading={this.state.loading} channels={this.state.channelList} selectedChannelId={this.state.selectedChannelId} isSelectedVideo={this.state.selectedVideoId} fullScreen={this.state.fullScreen} />
      </div>
     );

@@ -40,11 +40,12 @@ var Detail = React.createClass({
     var {selectedChannelId} = this.props;
     var {currentChannel} = this.props;
     var {fullScreen} = this.props;
-    var isSelectedChannel = selectedChannelId && selectedChannelId.length > 10;
+    var isSelectedChannel = selectedChannelId && selectedChannelId !== 'browse';
 
     var detailName = detail.snippet ? detail.snippet.title : '';
     var description = detail.snippet ? detail.snippet.description : '';
 
+    var isPlaylist = ActionCreator.isPlaylist(selectedChannelId);
     var isSelectedVideo = !!detail.id;
     var url = detail.id ? ActionCreator.generatePlayerUrl(detail.id) : '';
     var playerUrl = detail.id ? ActionCreator.generatePlayerUrl(detail.id, 1) : '';
@@ -52,6 +53,7 @@ var Detail = React.createClass({
     var className;
     var tipsClass = 'tips';
     var controlClass = 'control detail-control';
+    var markAsClass = isPlaylist ? 'mark-as hide' : 'mark-as';
     var likeClass = 'fa fa-heart-o';
 
     if (detail.id && detail.id in likes.videos) {
@@ -85,7 +87,7 @@ var Detail = React.createClass({
         </div>
         <div className={controlClass}>
           <span className="icon icon-fullscreen" onClick={this.toggleFullScreen}></span>
-          <div className="mark-as">
+          <div className={markAsClass}>
             Mark as：
            <button className="mark-button" onClick={this.handleMark.bind(this, 'watched')}>Watched</button>
            <button className="mark-button" onClick={this.handleMark.bind(this, 'unwatched')}>Unwatched</button>
@@ -94,7 +96,6 @@ var Detail = React.createClass({
         </div>
         <div className={tipsClass}>
           <p>Made with <i className="fa fa-heartbeat fa-fw"></i> by <a href="javascript:void(0)" onClick={this.clickLink.bind(this, 'http://leplay.net/')}>Leplay</a> in Beijing.</p>
-
         </div>
       </div>
     );

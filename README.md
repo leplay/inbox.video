@@ -17,3 +17,13 @@ Develop with:
 Build with:
 
     $ gulp build && gulp manifest
+
+
+
+### To Do
+
+- Icon & favicon
+- Shortcuts support
+- Vimeo
+- Auto mark status after video ends
+- More info of Profile page

@@ -2,6 +2,7 @@
 
 var React = require('react');
 var WatchItem = require('./WatchItem.jsx');
+var Constants = require('../constants/AppConstants');
 var ActionCreator = require('../actions/HeisenbergActionCreators');
 
 var Navigation = React.createClass({
@@ -13,7 +14,7 @@ var Navigation = React.createClass({
   componentDidMount: function() {
     if (this.props.user.$identity) {
       setTimeout(function() {
-        ActionCreator.refresh(this.props.watchlist);
+        // ActionCreator.refresh(this.props.watchlist);
       }.bind(this), 3000);
     }
   },
@@ -25,6 +26,9 @@ var Navigation = React.createClass({
         break;
       case 'likes':
         ActionCreator.showLikes(this.props.likes);
+        break;
+      case 'picks':
+        ActionCreator.showPlaylist(Constants.PlaylistIds.PICKS);
         break;
       case 'profile':
         ActionCreator.showProfile(true);
@@ -66,12 +70,14 @@ var Navigation = React.createClass({
       editClass = 'editing';
       editText = 'Done';
     }
+
     return (
       <div className={className}>
         <h3>Main</h3>
         <ol className="main">
           <li className={selectedChannelId === 'browse' ? 'selected' : ''} onClick={this.switchTab.bind(this, 'browse')}>Browse</li>
-          <li className={selectedChannelId === likes.channelId ? 'selected' : ''} onClick={this.switchTab.bind(this, 'likes')}>Likes</li>
+          <li className={selectedChannelId === 'picks' ? 'selected' : ''} onClick={this.switchTab.bind(this, 'picks')}>Top Picks</li>
+          <li className={selectedChannelId === 'likes' ? 'selected' : ''} onClick={this.switchTab.bind(this, 'likes')}>Likes</li>
         </ol>
 
         <div className="watchlist">
