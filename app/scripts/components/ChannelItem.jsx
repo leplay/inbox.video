@@ -7,8 +7,9 @@ var ShowItem = React.createClass({
   propTypes: {
     channel: React.PropTypes.object.isRequired
   },
-  handleClick(id) {
-    ActionCreator.subscribe(id);
+  handleClick(video) {
+    this.props.clickChannel(video);
+    // ActionCreator.subscribe(id);
   },
   render() {
     var {channel} = this.props;
@@ -17,10 +18,10 @@ var ShowItem = React.createClass({
     };
 
     return (
-      <li className="channel-item" style={style} onClick={this.handleClick.bind(this, channel.snippet.channelId)}>
+      <li className="channel-item" style={style} onClick={this.handleClick.bind(this, channel)}>
         <div className="inner-channel">
-          <span className="channel-name">{channel.snippet.channelTitle}</span>
-          <span className="add-icon">Subscribe</span>
+          <span className="channel-name">{channel.snippet.title}</span>
+          <span className="add-icon">Play</span>
         </div>
       </li>
     );

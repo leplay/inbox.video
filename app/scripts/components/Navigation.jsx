@@ -22,7 +22,7 @@ var Navigation = React.createClass({
     if (this.props.user.$identity) {
       switch(tab) {
       case 'browse':
-        ActionCreator.getChannelList();
+        ActionCreator.getVideoList();
         break;
       case 'likes':
         ActionCreator.showPage(this.props.likes, 'likes');
@@ -75,7 +75,7 @@ var Navigation = React.createClass({
       <div className={className}>
         <h3>Main</h3>
         <ol className="main">
-          <li className={selectedChannelId === 'browse' ? 'selected' : ''} onClick={this.switchTab.bind(this, 'browse')}>Browse</li>
+          <li className={selectedChannelId === 'browse' || selectedChannelId === 'browse-list' ? 'selected' : ''} onClick={this.switchTab.bind(this, 'browse')}>Browse</li>
           <li className={selectedChannelId === 'picks' ? 'selected' : ''} onClick={this.switchTab.bind(this, 'picks')}>Top Picks</li>
           <li className={selectedChannelId === 'likes' ? 'selected' : ''} onClick={this.switchTab.bind(this, 'likes')}>Likes</li>
         </ol>
@@ -86,7 +86,7 @@ var Navigation = React.createClass({
           <span className="text-grey edit-mode" onClick={this.toggleEditMode}>{editText}</span>
           <ul className={editClass}>
             {watchlist.map(channel =>
-              <WatchItem ref="item" channel={channel} updated={refresh.status === 2 && refresh.channelId === channel.channelId} isSelected={selectedChannelId === channel.channelId} unwatchedCount={unwatched[channel.channelId] ? unwatched[channel.channelId].length : 0} />
+              <WatchItem key={channel.channelId} ref="item" channel={channel} updated={refresh.status === 2 && refresh.channelId === channel.channelId} isSelected={selectedChannelId === channel.channelId} unwatchedCount={unwatched[channel.channelId] ? unwatched[channel.channelId].length : 0} />
             )}
           </ul>
         </div>

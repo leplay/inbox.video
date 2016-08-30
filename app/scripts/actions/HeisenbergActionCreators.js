@@ -22,7 +22,7 @@ var likesPlaylist = {
 
 module.exports = {
   isPlaylist: function(str) {
-    return _.contains(['browse', 'likes', 'picks'], str);
+    return _.contains(['browse', 'browse-list', 'likes', 'picks'], str);
   },
   search: function(keyword) {
     AppDispatcher.handleViewAction({
@@ -57,10 +57,10 @@ module.exports = {
       }
     });
   },
-  getChannelList: function(type) {
+  getVideoList: function(type) {
     var access_token = token.id;
     if (!access_token) {
-      this.getToken(this.getChannelList);
+      this.getToken(this.getVideoList);
       return false;
     }
 
@@ -77,7 +77,7 @@ module.exports = {
     var data = {
       'part': 'snippet',
       'chart': type,
-      'maxResults': 30,
+      'maxResults': 12,
       'access_token': access_token
     };
     $.ajax({
@@ -269,7 +269,7 @@ module.exports = {
   },
   getToken: function(callback) {
     var now = new Date().getTime();
-    if (!token.id || token.expiresAt < now) {
+    if (gapi.auth && (!token.id || token.expiresAt < now)) {
       gapi.auth.authorize(Constants.AuthObj, function(result) {
         token.id = result.access_token;
         token.expiresAt = parseInt(result.expires_at) * 1000;
@@ -502,6 +502,14 @@ module.exports = {
 
     this.getVideos(channel);
   },
+  toListView: function(videos, selectedVideo) {
+    AppDispatcher.handleViewAction({
+      type: Constants.ActionTypes.TO_LIST_VIEW,
+      videos: videos,
+      selectedVideo: selectedVideo
+    });
+    this.getVideo(selectedVideo.id);
+  },
   like: function(detail, likes) {
     var access_token = token.id;
     var resource = {
@@ -557,6 +565,6 @@ module.exports = {
       id: profile.id
     });
 
-    this.getChannelList();
+    this.getVideoList();
   }
 };

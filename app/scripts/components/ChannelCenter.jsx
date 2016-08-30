@@ -20,7 +20,7 @@ var ChannelCenter = React.createClass({
   componentDidMount: function() {
     setTimeout(function() {
       if (this.props.user && this.props.user.$identity) {
-        ActionCreator.getChannelList(type);
+        ActionCreator.getVideoList(type);
       }
     }.bind(this), 1000);
   },
@@ -37,8 +37,11 @@ var ChannelCenter = React.createClass({
     }
   },
   loadCenter: function(type) {
-    ActionCreator.getChannelList(type);
+    ActionCreator.getVideoList(type);
     React.findDOMNode(this.refs.search).value = '';
+  },
+  clickChannel: function(video) {
+    ActionCreator.toListView(this.props.channels, video);
   },
   render() {
     var {user} = this.props;
@@ -51,7 +54,7 @@ var ChannelCenter = React.createClass({
     var showChannelCenter = false;
     var showProfile = selectedChannelId === 'profile' ? true : false;
 
-    if (selectedChannelId === 'browse' || selectedChannelId === 'Likes' || selectedChannelId === 'profile') {
+    if (selectedChannelId === 'browse' || selectedChannelId === 'profile') {
       showChannelCenter = true;
     }
 
@@ -88,7 +91,7 @@ var ChannelCenter = React.createClass({
           </div>
           <ol className={listClass}>
           {channels.map(channel =>
-            <ChannelItem channel={channel} />
+            <ChannelItem key={channel.id} channel={channel} clickChannel={this.clickChannel} />
           )}
           </ol>
           <div className={noResultClass}>

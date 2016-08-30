@@ -17,6 +17,7 @@ module.exports = {
     REMOVE_CHANNEL: null,
     SEARCH: null,
     SHOW_PAGE: null,
+    TO_LIST_VIEW: null,
     TOGGLE_EDIT_MODE: null,
     TOGGLE_FULL_SCREEN: null,
     TOGGLE_SELECT_MODE: null

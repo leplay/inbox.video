@@ -26,16 +26,16 @@ var App = React.createClass({
       }.bind(this));
     }
 
-    var hidden = "hidden";
+    var hidden = 'hidden';
     if (hidden in document) {
-      document.addEventListener("visibilitychange", onchange);
-    } else if ((hidden = "mozHidden") in document) {
-      document.addEventListener("mozvisibilitychange", onchange);
-    } else if ((hidden = "webkitHidden") in document) {
-      document.addEventListener("webkitvisibilitychange", onchange);
-    } else if ((hidden = "msHidden") in document) {
-      document.addEventListener("msvisibilitychange", onchange);
-    } else if ("onfocusin" in document) {
+      document.addEventListener('visibilitychange', onchange);
+    } else if ((hidden = 'mozHidden') in document) {
+      document.addEventListener('mozvisibilitychange', onchange);
+    } else if ((hidden = 'webkitHidden') in document) {
+      document.addEventListener('webkitvisibilitychange', onchange);
+    } else if ((hidden = 'msHidden') in document) {
+      document.addEventListener('msvisibilitychange', onchange);
+    } else if ('onfocusin' in document) {
       document.onfocusin = document.onfocusout = onchange;
     } else {
       window.onpageshow = window.onpagehide = window.onfocus = window.onblur = onchange;

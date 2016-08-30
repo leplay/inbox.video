@@ -63,7 +63,6 @@ function markAs(videos, status) {
     if (status === 'unwatched') {
       _unwatched[id].push(video.id);
     }
-    console.log(_unwatched);
   });
 }
 
@@ -290,6 +289,18 @@ var HeisenbergStore = assign({}, BaseStore, {
         _loading = false;
         HeisenbergStore.emitChange();
         mixpanel.track(action.type, {category: action.category});
+        break;
+      case Constants.ActionTypes.TO_LIST_VIEW:
+        _channelList = [];
+        _selectedChannelId = 'browse-list';
+        _selectedChannel = {
+          id: 'browse-list',
+          title: 'Browse'
+        };
+        _selectedVideoId = action.selectedVideo.id;
+        _videos = action.videos;
+        HeisenbergStore.emitChange();
+        mixpanel.track(action.type);
         break;
       case Constants.ActionTypes.SHOW_PAGE:
         _selectedChannelId = action.page;
