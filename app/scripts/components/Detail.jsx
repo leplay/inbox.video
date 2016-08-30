@@ -77,7 +77,7 @@ var Detail = React.createClass({
       <div className={className}>
         <div className="content">
           <h2 className="detail-name">{detailName}</h2>
-          <p className={isWatched ? "update-date" : "update-date unwatched"}>{FormatDate.format('yyyy-MM-dd HH:mm', detail.snippet ? new Date(detail.snippet.publishedAt).getTime() : 0)}</p>
+          <p className={isWatched ? "update-date" : "update-date unwatched"}>{FormatDate.format('yyyy-MM-dd HH:mm', detail.snippet ? new Date(detail.snippet.publishedAt).getTime() : 0)} by {detail.snippet ? detail.snippet.channelTitle : ''}</p>
           <Player url={playerUrl} fullScreen={fullScreen} />
           <p className="source">Source： <a href="javascript:void(0)" onClick={this.clickLink.bind(this, url + '&feature=' + location.hostname)}>{url}</a></p>
           <div className="description">

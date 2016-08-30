@@ -22,7 +22,7 @@ var likesPlaylist = {
 
 module.exports = {
   isPlaylist: function(str) {
-    return _.contains(['browse', 'browse-list', 'likes', 'picks'], str);
+    return _.contains(['browse', 'browse-list', 'search', 'likes', 'picks'], str);
   },
   search: function(keyword) {
     AppDispatcher.handleViewAction({
@@ -33,7 +33,7 @@ module.exports = {
     var access_token = token.id;
     var data = {
       'part': 'snippet',
-      'type': 'channel',
+      'type': 'video',
       'q': keyword,
       'maxResults': 48,
       'access_token': access_token
@@ -50,7 +50,7 @@ module.exports = {
         AppDispatcher.handleViewAction({
           type: Constants.ActionTypes.SEARCH,
           keyword: keyword,
-          data: resp.items
+          data: resp
         });
       } else {
         console.log('ajax error');

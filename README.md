@@ -24,6 +24,7 @@ Build with:
 
 - Icon & favicon
 - Banner for Top Picks
+- Router
 - Order channel
 - Shortcuts support
 - Vimeo

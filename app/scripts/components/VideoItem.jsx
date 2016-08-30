@@ -18,7 +18,7 @@ var videoItem = React.createClass({
     var {selectedVideoId} = this.props;
     var {currentChannel} = this.props;
     var {selectMode} = this.props;
-    var videoId = video.snippet.resourceId ? video.snippet.resourceId.videoId : video.id;
+    var videoId = video.snippet.resourceId ? video.snippet.resourceId.videoId : (typeof video.id === 'object' ? video.id.videoId : video.id);
     var isSelected = selectedVideoId === videoId;
     var className = isSelected ? 'video selected' : 'video';
     var checkboxClass = selectMode ? 'checkbox' : 'checkbox hide';
