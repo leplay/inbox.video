@@ -28,8 +28,12 @@ var videoItem = React.createClass({
       className += ' unwatched';
     }
 
+    var itemStyle = {
+      // backgroundImage: 'url(' + video.snippet.thumbnails.medium.url + ')'
+    };
+
     return (
-      <li className={className}>
+      <li style={itemStyle} className={className}>
         <input className={checkboxClass} value={video.snippet.resourceId.videoId} type="checkbox" />
         <div className="block" onClick={this.clickVideo.bind(this, video.snippet.resourceId.videoId)}>
           <p className="video-title">{video.snippet.title.length > 56 ? video.snippet.title.substr(0, 56) + '...' : video.snippet.title}</p>

@@ -36,9 +36,9 @@ var Welcome = React.createClass({
           <ul className="feature-list">
             <li>Watch status for every single video</li>
             <li>Manage subscriptions</li>
+            <li>Handpick videos</li>
             <li>Like a video</li>
             <li>Sync to Youtube</li>
-            <li>Super fast</li>
           </ul>
           <a href="javascript:void(0)" id="signin-button" className="button button-signin" onClick={this.handleClick}></a>
         </div>

@@ -23,6 +23,8 @@ Build with:
 ### To Do
 
 - Icon & favicon
+- Banner for Top Picks
+- Order channel
 - Shortcuts support
 - Vimeo
 - Auto mark status after video ends

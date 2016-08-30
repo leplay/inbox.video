@@ -450,14 +450,15 @@ module.exports = {
       });
 
       if (likesObj) {
-        this.savePlaylist(likesObj);
+        this.savePlaylist(likesObj, 'likes');
       } else {
-        this.insertPlaylist();
+        this.insertLikes();
       }
     }.bind(this));
   },
-  savePlaylist: function(data) {
+  savePlaylist: function(data, tab) {
     var obj = {};
+    obj.channelId = tab;
     obj.playlistId = data.id;
     obj.provider = 'youtube';
     obj.totalItemCount = data.contentDetails.itemCount;
@@ -466,11 +467,11 @@ module.exports = {
     obj.updatedAt = new Date().getTime();
 
     AppDispatcher.handleViewAction({
-      type: Constants.ActionTypes.INIT_LIKES,
+      type: tab === 'likes' ? Constants.ActionTypes.INIT_LIKES : Constants.ActionTypes.INIT_PLAYLIST,
       data: obj
     });
   },
-  insertPlaylist: function() {
+  insertLikes: function() {
     var access_token = token.id;
 
     $.ajax({
@@ -483,7 +484,7 @@ module.exports = {
       }
     }).done(function(resp) {
       if (resp) {
-        this.savePlaylist(resp);
+        this.savePlaylist(resp, 'likes');
       }
     }.bind(this));
   },
@@ -493,50 +494,13 @@ module.exports = {
       page: bool ? 'profile' : 'browse',
     });
   },
-  showLikes: function(data) {
+  showPage: function(channel, page) {
     AppDispatcher.handleViewAction({
       type: Constants.ActionTypes.SHOW_PAGE,
-      page: 'likes'
-    });
-    console.log(data);
-    this.getVideos(data);
-  },
-  showPlaylist: function(id) {
-    AppDispatcher.handleViewAction({
-      type: Constants.ActionTypes.SHOW_PAGE,
-      page: 'picks'
+      page: page
     });
 
-    var access_token = token.id;
-    var data = {
-      'part': 'snippet,contentDetails',
-      'maxResults': 15,
-      'id': id,
-      'access_token': access_token
-    };
-
-    $.ajax({
-      url: Constants.ActionUrls.PLAYLIST,
-      data: data,
-      xhrFields: {
-        withCredentials: true
-      }
-    }).done(function(resp) {
-      if (resp) {
-        console.log(resp);
-        var data = resp.items[0];
-        var obj = {};
-        obj.playlistId = data.id;
-        obj.provider = 'youtube';
-        obj.totalItemCount = data.contentDetails.itemCount;
-        obj.title = data.snippet.title;
-        obj.description = data.snippet.description;
-        obj.updatedAt = new Date().getTime();
-        this.getVideos(obj);
-      } else {
-        console.log('ajax error');
-      }
-    }.bind(this));
+    this.getVideos(channel);
   },
   like: function(detail, likes) {
     var access_token = token.id;

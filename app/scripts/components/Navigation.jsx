@@ -25,10 +25,10 @@ var Navigation = React.createClass({
         ActionCreator.getChannelList();
         break;
       case 'likes':
-        ActionCreator.showLikes(this.props.likes);
+        ActionCreator.showPage(this.props.likes, 'likes');
         break;
       case 'picks':
-        ActionCreator.showPlaylist(Constants.PlaylistIds.PICKS);
+        ActionCreator.showPage(Constants.Playlists.PICKS, 'picks');
         break;
       case 'profile':
         ActionCreator.showProfile(true);

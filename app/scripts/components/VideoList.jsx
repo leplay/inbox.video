@@ -121,7 +121,7 @@ var VideoList = React.createClass({
         </div>
         <div className={loadMoreClass} onClick={this.loadMore.bind(this, currentChannel.nextPageToken)}>LOAD MORE</div>
         <div className="control videos-control">
-            <span className="select-mode" onClick={this.toggleSelectMode}>{selectCopy}</span>
+            <span className={isPlaylist ? 'select-mode hide' : 'select-mode'} onClick={this.toggleSelectMode}>{selectCopy}</span>
             <span className={countClass}>{currentChannel.totalItemCount} videos</span>
             <div className={markClass}>
               <span className="mark-button" onClick={this.markAs.bind(this, 'watched')}>Watched</span>

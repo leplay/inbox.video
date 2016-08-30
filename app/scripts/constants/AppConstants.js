@@ -39,7 +39,13 @@ module.exports = {
     immediate: true,
     scope: 'https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtubepartner https://www.googleapis.com/auth/youtube'
   },
-  PlaylistIds: {
-    PICKS: 'PLhhVV86ei7EksrFcimtj28H7JVtePqlg1'
+  Playlists: {
+    PICKS: {
+      id: 'PLhhVV86ei7EksrFcimtj28H7JVtePqlg1',
+      channelId: 'picks',
+      playlistId: 'PLhhVV86ei7EksrFcimtj28H7JVtePqlg1',
+      provider: 'youtube',
+      title: 'Top Picks'
+    }
   }
 };

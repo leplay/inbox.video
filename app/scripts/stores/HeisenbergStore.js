@@ -114,10 +114,13 @@ var HeisenbergStore = assign({}, BaseStore, {
         _detail = {};
         var channel = action.channel;
         var data = action.data;
-        var isLikesPage = _selectedChannelId === 'likes';
-        var isPlaylist = _.contains(['likes', 'picks'], _selectedChannelId);
+        var isLikesPage = channel.channelId === 'likes';
+        var isPlaylist = _.contains(['likes', 'picks'], channel.channelId);
         if (isLikesPage && data.items.length === data.pageInfo.totalResults) {
           _likes.videos = {};
+        }
+        if (isPlaylist) {
+          _videos = [];
         }
 
         _.each(data.items, function(video) {
@@ -130,10 +133,8 @@ var HeisenbergStore = assign({}, BaseStore, {
             _unwatched[channel.channelId] = arr;
           }
         });
-        if (!isPlaylist) {
-          _selectedChannelId = action.channel.channelId;
-          channel.totalItemCount = data.pageInfo.totalResults;
-        }
+
+        channel.totalItemCount = data.pageInfo.totalResults;
         channel.updatedAt = new Date().getTime();
 
         if (!isLikesPage) {
@@ -147,6 +148,7 @@ var HeisenbergStore = assign({}, BaseStore, {
           _videos = data.items;
         }
 
+        _selectedChannelId = action.channel.channelId;
         _selectedChannel = action.channel;
         _selectedChannel.nextPageToken = data.nextPageToken;
         HeisenbergStore.emitChange();
@@ -162,9 +164,9 @@ var HeisenbergStore = assign({}, BaseStore, {
       case Constants.ActionTypes.INIT_LIKES:
         _likes = action.data;
         _likes.videos = {};
-        _unwatched[_likes.playlistId] = [];
+        // _unwatched[_likes.playlistId] = [];
         Storage.updateData('likes', _likes);
-        Storage.updateData('unwatched', _unwatched);
+        // Storage.updateData('unwatched', _unwatched);
         break;
       case Constants.ActionTypes.LOAD_DETAIL:
         _detail = action.data;
@@ -278,17 +280,6 @@ var HeisenbergStore = assign({}, BaseStore, {
         Storage.updateData('watchlist', _watchlist);
         Storage.updateData('unwatched', _unwatched);
         break;
-      // case Constants.ActionTypes.LOAD_CHANNEL_CENTER:
-      //   _channelList = action.data;
-      //   _selectedChannelId = 'browse';
-      //   _selectedVideoId = false;
-      //   _videos = [];
-      //   _detail = {};
-      //   _keyword = '';
-      //   _loading = false;
-      //   HeisenbergStore.emitChange();
-      //   mixpanel.track(action.type, {category: action.category});
-      //   break;
       case Constants.ActionTypes.LOAD_CHANNEL_CENTER:
         _channelList = action.data;
         _selectedChannelId = 'browse';
