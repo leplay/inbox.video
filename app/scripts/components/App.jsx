@@ -1,6 +1,10 @@
 'use strict';
 
 var React = require('react');
+<<<<<<< HEAD
+=======
+var _ = require('underscore');
+>>>>>>> master
 var HeisenbergStore = require('../stores/HeisenbergStore');
 var ActionCreator = require('../actions/HeisenbergActionCreators');
 var Navigation = require('./Navigation.jsx');
@@ -25,6 +29,7 @@ var App = React.createClass({
       }.bind(this));
     }
 
+<<<<<<< HEAD
     var hidden = "hidden";
     if (hidden in document) {
       document.addEventListener("visibilitychange", onchange);
@@ -35,6 +40,18 @@ var App = React.createClass({
     } else if ((hidden = "msHidden") in document) {
       document.addEventListener("msvisibilitychange", onchange);
     } else if ("onfocusin" in document) {
+=======
+    var hidden = 'hidden';
+    if (hidden in document) {
+      document.addEventListener('visibilitychange', onchange);
+    } else if ((hidden = 'mozHidden') in document) {
+      document.addEventListener('mozvisibilitychange', onchange);
+    } else if ((hidden = 'webkitHidden') in document) {
+      document.addEventListener('webkitvisibilitychange', onchange);
+    } else if ((hidden = 'msHidden') in document) {
+      document.addEventListener('msvisibilitychange', onchange);
+    } else if ('onfocusin' in document) {
+>>>>>>> master
       document.onfocusin = document.onfocusout = onchange;
     } else {
       window.onpageshow = window.onpagehide = window.onfocus = window.onblur = onchange;
@@ -56,12 +73,27 @@ var App = React.createClass({
     HeisenbergStore.removeChangeListener(this._onChange);
   },
   render() {
+<<<<<<< HEAD
+=======
+    var selectedChannelId = this.state.selectedChannelId;
+    var selectedVideoId = this.state.selectedVideoId;
+    var isPlaylist = ActionCreator.isPlaylist(selectedChannelId);
+    var isWatched = true;
+    if (selectedChannelId && !isPlaylist) {
+      isWatched = this.state.unwatched[selectedChannelId].indexOf(selectedVideoId) < 0;
+    }
+>>>>>>> master
     return (
       <div className="heisenberg-app">
         <Navigation watchlist={this.state.watchlist} unwatched={this.state.unwatched} likes={this.state.likes} selectedChannelId={this.state.selectedChannelId} fullScreen={this.state.fullScreen} editMode={this.state.editMode} refresh={this.state.refresh} user={this.state.user} />
         <VideoList videos={this.state.videos} unwatchedItems={this.state.unwatched[this.state.selectedChannelId]} selectedChannelId={this.state.selectedChannelId} selectedVideoId={this.state.selectedVideoId} fullScreen={this.state.fullScreen} currentChannel={this.state.selectedChannel} selectMode={this.state.selectMode} />
+<<<<<<< HEAD
         <Detail detail={this.state.detail} likes={this.state.likes} isWatched={this.state.selectedVideoId ? this.state.unwatched[this.state.selectedChannelId].indexOf(this.state.selectedVideoId) < 0 : false} selectedChannelId={this.state.selectedChannelId} fullScreen={this.state.fullScreen} currentChannel={this.state.selectedChannel} />
         <ChannelCenter keyword={this.state.keyword} user={this.state.user} loading={this.state.loading} channels={this.state.channelList} selectedChannelId={this.state.selectedChannelId} isSelectedVideo={this.state.selectedVideoId} fullScreen={this.state.fullScreen} />
+=======
+        <Detail detail={this.state.detail} likes={this.state.likes} isWatched={isWatched} selectedChannelId={this.state.selectedChannelId} fullScreen={this.state.fullScreen} currentChannel={this.state.selectedChannel} />
+        <ChannelCenter keyword={this.state.keyword} user={this.state.user} loading={this.state.loading} videos={this.state.videos} selectedChannel={this.state.selectedChannel} selectedChannelId={this.state.selectedChannelId} isSelectedVideo={this.state.selectedVideoId} fullScreen={this.state.fullScreen} />
+>>>>>>> master
      </div>
     );
   }

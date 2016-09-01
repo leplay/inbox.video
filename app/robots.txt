@@ -1,2 +1,6 @@
 User-agent: *
+<<<<<<< HEAD
 Disallow: /
+=======
+Disallow: 
+>>>>>>> master

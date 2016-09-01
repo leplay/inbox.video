@@ -2,7 +2,10 @@
 
 var dest = './dist';
 var src = './app';
+<<<<<<< HEAD
 var cdn = 'http://static.yinshi.co/';
+=======
+>>>>>>> master
 var gutil = require('gulp-util');
 var debug = gutil.env.type === 'dev';
 
@@ -19,7 +22,10 @@ module.exports = {
   },
   sass: {
     src: src + '/styles/**/*.{sass,scss,css}',
+<<<<<<< HEAD
     cdn: cdn,
+=======
+>>>>>>> master
     dest: dest + '/styles',
     settings: {
       outputStyle: gutil.env.type === 'dev' ? 'nested' : 'compressed',
@@ -49,7 +55,10 @@ module.exports = {
     src: 'app/*.html',
     styleDest: dest + '/styles',
     scriptDest: dest + '/scripts',
+<<<<<<< HEAD
     cdn: cdn,
+=======
+>>>>>>> master
     dest: dest,
     debug: debug
   },

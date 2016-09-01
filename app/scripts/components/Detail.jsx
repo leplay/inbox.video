@@ -40,11 +40,19 @@ var Detail = React.createClass({
     var {selectedChannelId} = this.props;
     var {currentChannel} = this.props;
     var {fullScreen} = this.props;
+<<<<<<< HEAD
     var isSelectedChannel = selectedChannelId && selectedChannelId.length > 10;
+=======
+    var isSelectedChannel = selectedChannelId && selectedChannelId !== 'browse';
+>>>>>>> master
 
     var detailName = detail.snippet ? detail.snippet.title : '';
     var description = detail.snippet ? detail.snippet.description : '';
 
+<<<<<<< HEAD
+=======
+    var isPlaylist = ActionCreator.isPlaylist(selectedChannelId);
+>>>>>>> master
     var isSelectedVideo = !!detail.id;
     var url = detail.id ? ActionCreator.generatePlayerUrl(detail.id) : '';
     var playerUrl = detail.id ? ActionCreator.generatePlayerUrl(detail.id, 1) : '';
@@ -52,6 +60,10 @@ var Detail = React.createClass({
     var className;
     var tipsClass = 'tips';
     var controlClass = 'control detail-control';
+<<<<<<< HEAD
+=======
+    var markAsClass = isPlaylist ? 'mark-as hide' : 'mark-as';
+>>>>>>> master
     var likeClass = 'fa fa-heart-o';
 
     if (detail.id && detail.id in likes.videos) {
@@ -75,7 +87,11 @@ var Detail = React.createClass({
       <div className={className}>
         <div className="content">
           <h2 className="detail-name">{detailName}</h2>
+<<<<<<< HEAD
           <p className={isWatched ? "update-date" : "update-date unwatched"}>{FormatDate.format('yyyy-MM-dd HH:mm', detail.snippet ? new Date(detail.snippet.publishedAt).getTime() : 0)}</p>
+=======
+          <p className={isWatched ? "update-date" : "update-date unwatched"}>{FormatDate.format('yyyy-MM-dd HH:mm', detail.snippet ? new Date(detail.snippet.publishedAt).getTime() : 0)} by {detail.snippet ? detail.snippet.channelTitle : ''}</p>
+>>>>>>> master
           <Player url={playerUrl} fullScreen={fullScreen} />
           <p className="source">Source： <a href="javascript:void(0)" onClick={this.clickLink.bind(this, url + '&feature=' + location.hostname)}>{url}</a></p>
           <div className="description">
@@ -85,7 +101,11 @@ var Detail = React.createClass({
         </div>
         <div className={controlClass}>
           <span className="icon icon-fullscreen" onClick={this.toggleFullScreen}></span>
+<<<<<<< HEAD
           <div className="mark-as">
+=======
+          <div className={markAsClass}>
+>>>>>>> master
             Mark as：
            <button className="mark-button" onClick={this.handleMark.bind(this, 'watched')}>Watched</button>
            <button className="mark-button" onClick={this.handleMark.bind(this, 'unwatched')}>Unwatched</button>
@@ -93,6 +113,7 @@ var Detail = React.createClass({
           <span className="icon icon-like" onClick={this.like}><i className={likeClass}></i></span>
         </div>
         <div className={tipsClass}>
+<<<<<<< HEAD
           <p>Made with <i className="fa fa-heartbeat fa-fw"></i> by <a href="javascript:void(0)" onClick={this.clickLink.bind(this, 'https://twitter.com/leplay_')}>Leplay</a> in Beijing. <a href="javascript:void(0)" onClick={this.donate}>Make a donation</a> for my VPN.</p>
           <form className="hide" ref="donation" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
             <input type="hidden" name="cmd" value="_s-xclick" />
@@ -100,6 +121,9 @@ var Detail = React.createClass({
             <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />
             <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1" />
           </form>
+=======
+          <p>Made with <i className="fa fa-heartbeat fa-fw"></i> by <a href="javascript:void(0)" onClick={this.clickLink.bind(this, 'http://leplay.net/')}>Leplay</a> in Beijing.</p>
+>>>>>>> master
         </div>
       </div>
     );

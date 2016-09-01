@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
   "name": "Heisenberg",
   "version": "0.1.0",
+=======
+  "name": "Inbox.Video",
+  "version": "2.0.0",
+>>>>>>> master
   "description": "",
   "author": "leplay",
   "license": "MIT",

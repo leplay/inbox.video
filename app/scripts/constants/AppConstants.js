@@ -17,6 +17,10 @@ module.exports = {
     REMOVE_CHANNEL: null,
     SEARCH: null,
     SHOW_PAGE: null,
+<<<<<<< HEAD
+=======
+    TO_LIST_VIEW: null,
+>>>>>>> master
     TOGGLE_EDIT_MODE: null,
     TOGGLE_FULL_SCREEN: null,
     TOGGLE_SELECT_MODE: null
@@ -38,5 +42,17 @@ module.exports = {
     cookiepolicy: 'single_host_origin',
     immediate: true,
     scope: 'https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtubepartner https://www.googleapis.com/auth/youtube'
+<<<<<<< HEAD
+=======
+  },
+  Playlists: {
+    PICKS: {
+      id: 'PLhhVV86ei7EksrFcimtj28H7JVtePqlg1',
+      channelId: 'picks',
+      playlistId: 'PLhhVV86ei7EksrFcimtj28H7JVtePqlg1',
+      provider: 'youtube',
+      title: 'Top Picks'
+    }
+>>>>>>> master
   }
 };

@@ -1,5 +1,9 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html manifest="/cache.manifest">
+=======
+<html>
+>>>>>>> master
 <head>
   <meta charset="UTF-8">
   <title>Inbox.Video</title>
@@ -26,10 +30,14 @@
     mixpanel.people.set(user);
     mixpanel.track('PAGEVIEW');
   }
+<<<<<<< HEAD
   window.onbeforeunload = function () {
     mixpanel.track('LEAVE');
     return null;
   };
+=======
+
+>>>>>>> master
   </script>
   <!-- end Mixpanel -->
 </body>

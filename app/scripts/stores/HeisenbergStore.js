@@ -14,7 +14,10 @@ var _user = Storage.getData('user') || {};
 var _likes = Storage.getData('likes') || {};
 var _videos = [];
 var _detail = {};
+<<<<<<< HEAD
 var _channelList = [];
+=======
+>>>>>>> master
 var _selectedChannel = {};
 var _selectedChannelId = 'browse';
 var _selectedVideoId = false;
@@ -63,7 +66,10 @@ function markAs(videos, status) {
     if (status === 'unwatched') {
       _unwatched[id].push(video.id);
     }
+<<<<<<< HEAD
     console.log(_unwatched);
+=======
+>>>>>>> master
   });
 }
 
@@ -73,7 +79,10 @@ var HeisenbergStore = assign({}, BaseStore, {
       watchlist: _watchlist,
       unwatched: _unwatched,
       videos: _videos,
+<<<<<<< HEAD
       channelList: _channelList,
+=======
+>>>>>>> master
       user: _user,
       likes: _likes,
       detail: _detail,
@@ -114,7 +123,12 @@ var HeisenbergStore = assign({}, BaseStore, {
         _detail = {};
         var channel = action.channel;
         var data = action.data;
+<<<<<<< HEAD
         var isLikesPage = channel.channelId === _likes.channelId;
+=======
+        var isLikesPage = channel.channelId === 'likes';
+        var isPlaylist = _.contains(['likes', 'picks'], channel.channelId);
+>>>>>>> master
         if (isLikesPage && data.items.length === data.pageInfo.totalResults) {
           _likes.videos = {};
         }
@@ -123,6 +137,7 @@ var HeisenbergStore = assign({}, BaseStore, {
           var publishedAt = new Date(video.snippet.publishedAt).getTime();
           if (isLikesPage) {
             _likes.videos[video.snippet.resourceId.videoId] = video.id;
+<<<<<<< HEAD
           } else {
             if (publishedAt > channel.updatedAt) {
               var arr = _unwatched[channel.channelId];
@@ -133,12 +148,24 @@ var HeisenbergStore = assign({}, BaseStore, {
         });
         channel.updatedAt = new Date().getTime();
         channel.totalItemCount = data.pageInfo.totalResults;
+=======
+          } else if (!isPlaylist && publishedAt > channel.updatedAt) {
+            var arr = _unwatched[channel.channelId];
+            arr.push(video.snippet.resourceId.videoId);
+            _unwatched[channel.channelId] = arr;
+          }
+        });
+
+        channel.totalItemCount = data.pageInfo.totalResults;
+        channel.updatedAt = new Date().getTime();
+>>>>>>> master
 
         if (!isLikesPage) {
           var index = _watchlist.indexOf(channel.channelId);
           _watchlist[index] = channel;            
         }
 
+<<<<<<< HEAD
         if (data.nextPageToken && _selectedChannel.channelId === action.channel.channelId) {
           _videos = _videos.concat(data.items);
         } else {
@@ -146,6 +173,15 @@ var HeisenbergStore = assign({}, BaseStore, {
           _selectedChannel = action.channel;
           _selectedChannelId = action.channel.channelId;
         }
+=======
+        if (_selectedChannel.nextPageToken && _selectedChannel.channelId === action.channel.channelId) {
+          _videos = _videos.concat(data.items);
+        } else {
+          _videos = data.items;
+        }
+        _selectedChannelId = channel.channelId;
+        _selectedChannel = channel;
+>>>>>>> master
         _selectedChannel.nextPageToken = data.nextPageToken;
         HeisenbergStore.emitChange();
         mixpanel.track(action.type, {id: _selectedChannelId});
@@ -160,9 +196,15 @@ var HeisenbergStore = assign({}, BaseStore, {
       case Constants.ActionTypes.INIT_LIKES:
         _likes = action.data;
         _likes.videos = {};
+<<<<<<< HEAD
         _unwatched[_likes.channelId] = [];
         Storage.updateData('likes', _likes);
         Storage.updateData('unwatched', _unwatched);
+=======
+        // _unwatched[_likes.playlistId] = [];
+        Storage.updateData('likes', _likes);
+        // Storage.updateData('unwatched', _unwatched);
+>>>>>>> master
         break;
       case Constants.ActionTypes.LOAD_DETAIL:
         _detail = action.data;
@@ -277,16 +319,45 @@ var HeisenbergStore = assign({}, BaseStore, {
         Storage.updateData('unwatched', _unwatched);
         break;
       case Constants.ActionTypes.LOAD_CHANNEL_CENTER:
+<<<<<<< HEAD
         _channelList = action.data;
         _selectedChannelId = 'browse';
         _selectedVideoId = false;
         _videos = [];
+=======
+        _videos = action.data.items;
+        _selectedChannelId = 'browse';
+        _selectedChannel = {
+          id: 'browse',
+          title: 'Browse',
+          category: action.category,
+          totalItemCount: action.data.pageInfo.totalResults,
+          nextPageToken: action.data.nextPageToken
+        };
+        _selectedVideoId = false;
+>>>>>>> master
         _detail = {};
         _keyword = '';
         _loading = false;
         HeisenbergStore.emitChange();
         mixpanel.track(action.type, {category: action.category});
         break;
+<<<<<<< HEAD
+=======
+      case Constants.ActionTypes.TO_LIST_VIEW:
+        if (_selectedChannelId === 'browse-list' && action.category === _selectedChannel.category) {
+          _videos = _videos.concat(action.data.items)
+        } else {
+          _videos = action.data.items;
+        }
+        _selectedChannel.nextPageToken = action.data.nextPageToken;
+        _selectedChannelId = 'browse-list';
+        _selectedChannel.id = 'browse-list';
+        _selectedVideoId = action.selectedVideo ? action.selectedVideo.id : false;
+        HeisenbergStore.emitChange();
+        mixpanel.track(action.type);
+        break;
+>>>>>>> master
       case Constants.ActionTypes.SHOW_PAGE:
         _selectedChannelId = action.page;
         HeisenbergStore.emitChange();
@@ -303,8 +374,26 @@ var HeisenbergStore = assign({}, BaseStore, {
         mixpanel.track(action.type);
         break;
       case Constants.ActionTypes.SEARCH:
+<<<<<<< HEAD
         _keyword = action.keyword;
         _channelList = action.data;
+=======
+        if (_keyword === action.keyword) {
+          _videos = _videos.concat(action.data.items);
+        } else {
+          _videos = action.data.items;
+        }
+        _keyword = action.keyword;
+        _selectedChannelId = 'search';
+        _selectedChannel = {
+          id: 'search',
+          keyword: _keyword,
+          title: 'Searching ' + _keyword,
+          nextPageToken: action.data.nextPageToken,
+          totalItemCount: action.data.pageInfo.totalResults
+        };
+
+>>>>>>> master
         _loading = false;
         HeisenbergStore.emitChange();
         mixpanel.track(action.type, {keyword: _keyword});

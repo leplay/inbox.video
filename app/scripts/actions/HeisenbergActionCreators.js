@@ -21,7 +21,14 @@ var likesPlaylist = {
 };
 
 module.exports = {
+<<<<<<< HEAD
   search: function(keyword) {
+=======
+  isPlaylist: function(str) {
+    return _.contains(['browse', 'browse-list', 'search', 'likes', 'picks'], str);
+  },
+  search: function(keyword, next) {
+>>>>>>> master
     AppDispatcher.handleViewAction({
       type: Constants.ActionTypes.LOADING,
       category: 'SEARCH'
@@ -30,12 +37,23 @@ module.exports = {
     var access_token = token.id;
     var data = {
       'part': 'snippet',
+<<<<<<< HEAD
       'type': 'channel',
+=======
+      'type': 'video',
+>>>>>>> master
       'q': keyword,
       'maxResults': 48,
       'access_token': access_token
     };
 
+<<<<<<< HEAD
+=======
+    if (next) {
+      data.pageToken = next;
+    }
+
+>>>>>>> master
     $.ajax({
       url: Constants.ActionUrls.SEARCH,
       data: data,
@@ -47,17 +65,28 @@ module.exports = {
         AppDispatcher.handleViewAction({
           type: Constants.ActionTypes.SEARCH,
           keyword: keyword,
+<<<<<<< HEAD
           data: resp.items
+=======
+          data: resp
+>>>>>>> master
         });
       } else {
         console.log('ajax error');
       }
     });
   },
+<<<<<<< HEAD
   getChannelList: function(type) {
     var access_token = token.id;
     if (!access_token) {
       this.getToken(this.getChannelList);
+=======
+  getVideoList: function(type, next) {
+    var access_token = token.id;
+    if (!access_token) {
+      this.getToken(this.getVideoList);
+>>>>>>> master
       return false;
     }
 
@@ -74,9 +103,20 @@ module.exports = {
     var data = {
       'part': 'snippet',
       'chart': type,
+<<<<<<< HEAD
       'maxResults': 30,
       'access_token': access_token
     };
+=======
+      'maxResults': 12,
+      'access_token': access_token
+    };
+
+    if (next) {
+      data.pageToken = next;
+    }
+
+>>>>>>> master
     $.ajax({
       url: Constants.ActionUrls.VIDEO,
       data: data,
@@ -86,9 +126,15 @@ module.exports = {
     }).done(function(resp) {
       if (resp) {
         AppDispatcher.handleViewAction({
+<<<<<<< HEAD
           type: Constants.ActionTypes.LOAD_CHANNEL_CENTER,
           category: type,
           data: resp.items
+=======
+          type: next ? Constants.ActionTypes.TO_LIST_VIEW : Constants.ActionTypes.LOAD_CHANNEL_CENTER,
+          category: type,
+          data: resp
+>>>>>>> master
         });
       } else {
         console.log('ajax error');
@@ -266,7 +312,11 @@ module.exports = {
   },
   getToken: function(callback) {
     var now = new Date().getTime();
+<<<<<<< HEAD
     if (!token.id || token.expiresAt < now) {
+=======
+    if (gapi.auth && (!token.id || token.expiresAt < now)) {
+>>>>>>> master
       gapi.auth.authorize(Constants.AuthObj, function(result) {
         token.id = result.access_token;
         token.expiresAt = parseInt(result.expires_at) * 1000;
@@ -447,6 +497,7 @@ module.exports = {
       });
 
       if (likesObj) {
+<<<<<<< HEAD
         this.savePlaylist(likesObj);
       } else {
         this.insertPlaylist();
@@ -456,6 +507,17 @@ module.exports = {
   savePlaylist: function(data) {
     var obj = {};
     obj.channelId = data.snippet.channelId;
+=======
+        this.savePlaylist(likesObj, 'likes');
+      } else {
+        this.insertLikes();
+      }
+    }.bind(this));
+  },
+  savePlaylist: function(data, tab) {
+    var obj = {};
+    obj.channelId = tab;
+>>>>>>> master
     obj.playlistId = data.id;
     obj.provider = 'youtube';
     obj.totalItemCount = data.contentDetails.itemCount;
@@ -464,11 +526,19 @@ module.exports = {
     obj.updatedAt = new Date().getTime();
 
     AppDispatcher.handleViewAction({
+<<<<<<< HEAD
       type: Constants.ActionTypes.INIT_LIKES,
       data: obj
     });
   },
   insertPlaylist: function() {
+=======
+      type: tab === 'likes' ? Constants.ActionTypes.INIT_LIKES : Constants.ActionTypes.INIT_PLAYLIST,
+      data: obj
+    });
+  },
+  insertLikes: function() {
+>>>>>>> master
     var access_token = token.id;
 
     $.ajax({
@@ -481,7 +551,11 @@ module.exports = {
       }
     }).done(function(resp) {
       if (resp) {
+<<<<<<< HEAD
         this.savePlaylist(resp);
+=======
+        this.savePlaylist(resp, 'likes');
+>>>>>>> master
       }
     }.bind(this));
   },
@@ -491,6 +565,7 @@ module.exports = {
       page: bool ? 'profile' : 'browse',
     });
   },
+<<<<<<< HEAD
   showLikes: function(data) {
     AppDispatcher.handleViewAction({
       type: Constants.ActionTypes.SHOW_PAGE,
@@ -498,6 +573,25 @@ module.exports = {
     });
 
     this.getVideos(data);
+=======
+  showPage: function(channel, page) {
+    AppDispatcher.handleViewAction({
+      type: Constants.ActionTypes.SHOW_PAGE,
+      page: page
+    });
+
+    this.getVideos(channel);
+  },
+  toListView: function(channel, videos, selectedVideo) {
+    var obj = channel;
+    obj.items = videos;
+    AppDispatcher.handleViewAction({
+      type: Constants.ActionTypes.TO_LIST_VIEW,
+      data: obj,
+      selectedVideo: selectedVideo
+    });
+    this.getVideo(selectedVideo.id);
+>>>>>>> master
   },
   like: function(detail, likes) {
     var access_token = token.id;
@@ -554,6 +648,10 @@ module.exports = {
       id: profile.id
     });
 
+<<<<<<< HEAD
     this.getChannelList();
+=======
+    this.getVideoList();
+>>>>>>> master
   }
 };
