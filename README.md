@@ -1,5 +1,4 @@
-[Inbox.Video](http://inbox.video/)
-----
+# Inbox.Video
 
 ![Screenshot](http://inbox.video/images/screenshot.png)
 
