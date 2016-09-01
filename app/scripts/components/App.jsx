@@ -57,11 +57,11 @@ var App = React.createClass({
     HeisenbergStore.removeChangeListener(this._onChange);
   },
   render() {
-    var selectedChannelId = this.state.selectedChannelId;
-    var selectedVideoId = this.state.selectedVideoId;
+    var { selectedChannelId } = this.state;
+    var { selectedVideoId } = this.state;
     var isPlaylist = ActionCreator.isPlaylist(selectedChannelId);
     var isWatched = true;
-    if (selectedChannelId && !isPlaylist) {
+    if (selectedChannelId && !isPlaylist && (selectedChannelId !== 'profile')) {
       isWatched = this.state.unwatched[selectedChannelId].indexOf(selectedVideoId) < 0;
     }
     return (

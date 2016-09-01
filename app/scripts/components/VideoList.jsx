@@ -67,7 +67,6 @@ var VideoList = React.createClass({
     ActionCreator.markAs(this.props.currentChannel.channelId, vals, status);
   },
   loadMore: function(token) {
-    console.log(this.props.currentChannel);
     if (this.props.selectedChannelId === 'search') {
       ActionCreator.search(this.props.currentChannel.keyword, this.props.currentChannel.nextPageToken);
     } else if (this.props.selectedChannelId === 'browse-list') {      
@@ -85,6 +84,7 @@ var VideoList = React.createClass({
     var {fullScreen} = this.props;
     var {currentChannel} = this.props;
     var isPlaylist = ActionCreator.isPlaylist(selectedChannelId);
+    var isProfile = selectedChannelId === 'profile';
     var className = 'videos';
     var selectCopy = 'Select';
     var countClass;
@@ -99,7 +99,7 @@ var VideoList = React.createClass({
       };
     }
 
-    if (!selectedChannelId || selectedChannelId === 'browse' || fullScreen) {
+    if (!selectedChannelId || selectedChannelId === 'browse' || isProfile || fullScreen) {
       className += ' hide';
     }
 
@@ -120,7 +120,7 @@ var VideoList = React.createClass({
         </div>
         <ol className={listClass}>
           {videos.map(video =>
-            <VideoItem video={video} currentChannel={currentChannel.title} selectMode={selectMode} selectedVideoId={selectedVideoId} isWatched={!isPlaylist ? unwatchedItems.indexOf(video.snippet.resourceId.videoId) < 0 : true} />
+            <VideoItem video={video} currentChannel={currentChannel.title} selectMode={selectMode} selectedVideoId={selectedVideoId} isWatched={!isPlaylist && !isProfile ? unwatchedItems.indexOf(video.snippet.resourceId.videoId) < 0 : true} />
           )}
         </ol>
         <div className={!videos.length ? 'no-video-tip' : 'no-video-tip hide'}>

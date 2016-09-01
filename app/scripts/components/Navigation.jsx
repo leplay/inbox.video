@@ -31,7 +31,7 @@ var Navigation = React.createClass({
         ActionCreator.showPage(Constants.Playlists.PICKS, 'picks');
         break;
       case 'profile':
-        ActionCreator.showProfile(true);
+        ActionCreator.showPage(false, 'profile');
         break;
       }
     }

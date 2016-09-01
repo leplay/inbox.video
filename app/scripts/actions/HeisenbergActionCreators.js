@@ -497,19 +497,15 @@ module.exports = {
       }
     }.bind(this));
   },
-  showProfile: function(bool) {
-    AppDispatcher.handleViewAction({
-      type: Constants.ActionTypes.SHOW_PAGE,
-      page: bool ? 'profile' : 'browse',
-    });
-  },
   showPage: function(channel, page) {
     AppDispatcher.handleViewAction({
       type: Constants.ActionTypes.SHOW_PAGE,
       page: page
     });
 
-    this.getVideos(channel);
+    if (channel) {
+      this.getVideos(channel);
+    }
   },
   toListView: function(channel, videos, selectedVideo) {
     var obj = channel;

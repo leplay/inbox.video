@@ -40,7 +40,7 @@ var Detail = React.createClass({
     var {selectedChannelId} = this.props;
     var {currentChannel} = this.props;
     var {fullScreen} = this.props;
-    var isSelectedChannel = selectedChannelId && selectedChannelId !== 'browse';
+    var isSelectedChannel = selectedChannelId && selectedChannelId !== 'browse' && selectedChannelId !== 'profile';
 
     var detailName = detail.snippet ? detail.snippet.title : '';
     var description = detail.snippet ? detail.snippet.description : '';

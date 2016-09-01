@@ -6,7 +6,7 @@ var Constants = require('../constants/AppConstants');
 
 var Profile = React.createClass({
   close: function() {
-    ActionCreator.showProfile(false);
+    ActionCreator.showPage(false, 'browse');
   },
   render() {
     var {user} = this.props;
