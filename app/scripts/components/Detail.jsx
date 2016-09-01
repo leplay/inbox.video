@@ -54,6 +54,7 @@ var Detail = React.createClass({
     var tipsClass = 'tips';
     var controlClass = 'control detail-control';
     var markAsClass = isPlaylist ? 'mark-as hide' : 'mark-as';
+
     var likeClass = 'fa fa-heart-o';
 
     if (detail.id && detail.id in likes.videos) {

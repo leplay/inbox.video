@@ -497,6 +497,14 @@ module.exports = {
       }
     }.bind(this));
   },
+  showLikes: function(data) {
+    AppDispatcher.handleViewAction({
+      type: Constants.ActionTypes.SHOW_PAGE,
+      page: 'likes'
+    });
+
+    this.getVideos(data);
+  },
   showPage: function(channel, page) {
     AppDispatcher.handleViewAction({
       type: Constants.ActionTypes.SHOW_PAGE,

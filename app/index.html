@@ -27,6 +27,10 @@
     mixpanel.track('PAGEVIEW');
   }
 
+  window.onbeforeunload = function () {
+    mixpanel.track('LEAVE');
+    return null;
+  };
   </script>
   <!-- end Mixpanel -->
 </body>
