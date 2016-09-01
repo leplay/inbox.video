@@ -3,7 +3,7 @@
 
 ![Screenshot](http://inbox.video/images/screenshot.png)
 
-### Build
+## Build
 
 Install the node modules:
 
@@ -11,23 +11,22 @@ Install the node modules:
 
 Develop with:
 
-	// Fill cliend_id to AppConstants.js
     $ npm run dev
 
 Build with:
 
-    $ gulp build && gulp manifest
+    $ gulp build
 
 
 
-### To Do
+## To Do
 
 - Icon & favicon
 - Desktop apps (Electron?)
 - Banner for Top Picks
 - Router
-- Order channel
+- Order subscriptions
 - Shortcuts support
-- Vimeo
 - Auto mark status after video ends
-- More info of Profile page
+- More analytics on Profile page
+- Vimeo (maybe)
