@@ -69,7 +69,7 @@ var App = React.createClass({
         <Navigation watchlist={this.state.watchlist} unwatched={this.state.unwatched} likes={this.state.likes} selectedChannelId={this.state.selectedChannelId} fullScreen={this.state.fullScreen} editMode={this.state.editMode} refresh={this.state.refresh} user={this.state.user} />
         <VideoList videos={this.state.videos} unwatchedItems={this.state.unwatched[this.state.selectedChannelId]} selectedChannelId={this.state.selectedChannelId} selectedVideoId={this.state.selectedVideoId} fullScreen={this.state.fullScreen} currentChannel={this.state.selectedChannel} selectMode={this.state.selectMode} />
         <Detail detail={this.state.detail} likes={this.state.likes} isWatched={isWatched} selectedChannelId={this.state.selectedChannelId} fullScreen={this.state.fullScreen} currentChannel={this.state.selectedChannel} />
-        <ChannelCenter keyword={this.state.keyword} user={this.state.user} loading={this.state.loading} channels={this.state.channelList} selectedChannelId={this.state.selectedChannelId} isSelectedVideo={this.state.selectedVideoId} fullScreen={this.state.fullScreen} />
+        <ChannelCenter keyword={this.state.keyword} user={this.state.user} loading={this.state.loading} videos={this.state.videos} selectedChannel={this.state.selectedChannel} selectedChannelId={this.state.selectedChannelId} isSelectedVideo={this.state.selectedVideoId} fullScreen={this.state.fullScreen} />
      </div>
     );
   }

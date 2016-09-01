@@ -11,7 +11,7 @@ var Welcome = React.createClass({
       ActionCreator.initLikesPlaylist();
     }, 2000);
   },
-  handleClick: function() {
+  handleAuth: function() {
     gapi.load('auth2', function() {
       var auth2 = gapi.auth2.init(Constants.AuthObj);
       auth2.signIn().then(function() {
@@ -28,6 +28,9 @@ var Welcome = React.createClass({
       }.bind(this));
     }.bind(this));
   },
+  clickLink: function(url) {
+    ActionCreator.openLink(url);
+  },
   render() {
     return (
       <div className="channel-center form">
@@ -38,9 +41,9 @@ var Welcome = React.createClass({
             <li>Manage subscriptions</li>
             <li>Handpick videos</li>
             <li>Sync to Youtube</li>
-            <li>Open source</li>
+            <li><a href="javascript:void(0)" onClick={this.clickLink.bind(this, 'https://github.com/inboxvideo/inbox.video')}>Open source</a></li>
           </ul>
-          <a href="javascript:void(0)" id="signin-button" className="button button-signin" onClick={this.handleClick}></a>
+          <a href="javascript:void(0)" id="signin-button" className="button button-signin" onClick={this.handleAuth}></a>
         </div>
       </div>
     );

@@ -14,7 +14,6 @@ var _user = Storage.getData('user') || {};
 var _likes = Storage.getData('likes') || {};
 var _videos = [];
 var _detail = {};
-var _channelList = [];
 var _selectedChannel = {};
 var _selectedChannelId = 'browse';
 var _selectedVideoId = false;
@@ -72,7 +71,6 @@ var HeisenbergStore = assign({}, BaseStore, {
       watchlist: _watchlist,
       unwatched: _unwatched,
       videos: _videos,
-      channelList: _channelList,
       user: _user,
       likes: _likes,
       detail: _detail,
@@ -123,7 +121,7 @@ var HeisenbergStore = assign({}, BaseStore, {
           var publishedAt = new Date(video.snippet.publishedAt).getTime();
           if (isLikesPage) {
             _likes.videos[video.snippet.resourceId.videoId] = video.id;
-          } else if (publishedAt > channel.updatedAt) {
+          } else if (!isPlaylist && publishedAt > channel.updatedAt) {
             var arr = _unwatched[channel.channelId];
             arr.push(video.snippet.resourceId.videoId);
             _unwatched[channel.channelId] = arr;
@@ -276,10 +274,16 @@ var HeisenbergStore = assign({}, BaseStore, {
         Storage.updateData('unwatched', _unwatched);
         break;
       case Constants.ActionTypes.LOAD_CHANNEL_CENTER:
-        _channelList = action.data;
+        _videos = action.data.items;
         _selectedChannelId = 'browse';
+        _selectedChannel = {
+          id: 'browse',
+          title: 'Browse',
+          category: action.category,
+          totalItemCount: action.data.pageInfo.totalResults,
+          nextPageToken: action.data.nextPageToken
+        };
         _selectedVideoId = false;
-        _videos = [];
         _detail = {};
         _keyword = '';
         _loading = false;
@@ -287,14 +291,15 @@ var HeisenbergStore = assign({}, BaseStore, {
         mixpanel.track(action.type, {category: action.category});
         break;
       case Constants.ActionTypes.TO_LIST_VIEW:
-        _channelList = [];
+        if (_selectedChannelId === 'browse-list' && action.category === _selectedChannel.category) {
+          _videos = _videos.concat(action.data.items)
+        } else {
+          _videos = action.data.items;
+        }
+        _selectedChannel.nextPageToken = action.data.nextPageToken;
         _selectedChannelId = 'browse-list';
-        _selectedChannel = {
-          id: 'browse-list',
-          title: 'Browse'
-        };
-        _selectedVideoId = action.selectedVideo.id;
-        _videos = action.videos;
+        _selectedChannel.id = 'browse-list';
+        _selectedVideoId = action.selectedVideo ? action.selectedVideo.id : false;
         HeisenbergStore.emitChange();
         mixpanel.track(action.type);
         break;
@@ -314,15 +319,21 @@ var HeisenbergStore = assign({}, BaseStore, {
         mixpanel.track(action.type);
         break;
       case Constants.ActionTypes.SEARCH:
+        if (_keyword === action.keyword) {
+          _videos = _videos.concat(action.data.items);
+        } else {
+          _videos = action.data.items;
+        }
         _keyword = action.keyword;
-        _channelList = [];
         _selectedChannelId = 'search';
         _selectedChannel = {
           id: 'search',
+          keyword: _keyword,
           title: 'Searching ' + _keyword,
+          nextPageToken: action.data.nextPageToken,
           totalItemCount: action.data.pageInfo.totalResults
         };
-        _videos = action.data.items;
+
         _loading = false;
         HeisenbergStore.emitChange();
         mixpanel.track(action.type, {keyword: _keyword});

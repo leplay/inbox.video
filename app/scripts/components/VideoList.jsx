@@ -67,7 +67,14 @@ var VideoList = React.createClass({
     ActionCreator.markAs(this.props.currentChannel.channelId, vals, status);
   },
   loadMore: function(token) {
-    ActionCreator.getVideos(this.props.currentChannel, token);
+    console.log(this.props.currentChannel);
+    if (this.props.selectedChannelId === 'search') {
+      ActionCreator.search(this.props.currentChannel.keyword, this.props.currentChannel.nextPageToken);
+    } else if (this.props.selectedChannelId === 'browse-list') {      
+      ActionCreator.getVideoList('mostPopular', this.props.currentChannel.nextPageToken);
+    } else {      
+      ActionCreator.getVideos(this.props.currentChannel, token);
+    }
   },
   render() {
     var {videos} = this.props;

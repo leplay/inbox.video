@@ -23,6 +23,7 @@ Build with:
 ### To Do
 
 - Icon & favicon
+- Desktop apps (Electron?)
 - Banner for Top Picks
 - Router
 - Order channel

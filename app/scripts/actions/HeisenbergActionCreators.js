@@ -24,7 +24,7 @@ module.exports = {
   isPlaylist: function(str) {
     return _.contains(['browse', 'browse-list', 'search', 'likes', 'picks'], str);
   },
-  search: function(keyword) {
+  search: function(keyword, next) {
     AppDispatcher.handleViewAction({
       type: Constants.ActionTypes.LOADING,
       category: 'SEARCH'
@@ -38,6 +38,10 @@ module.exports = {
       'maxResults': 48,
       'access_token': access_token
     };
+
+    if (next) {
+      data.pageToken = next;
+    }
 
     $.ajax({
       url: Constants.ActionUrls.SEARCH,
@@ -57,7 +61,7 @@ module.exports = {
       }
     });
   },
-  getVideoList: function(type) {
+  getVideoList: function(type, next) {
     var access_token = token.id;
     if (!access_token) {
       this.getToken(this.getVideoList);
@@ -80,6 +84,11 @@ module.exports = {
       'maxResults': 12,
       'access_token': access_token
     };
+
+    if (next) {
+      data.pageToken = next;
+    }
+
     $.ajax({
       url: Constants.ActionUrls.VIDEO,
       data: data,
@@ -89,9 +98,9 @@ module.exports = {
     }).done(function(resp) {
       if (resp) {
         AppDispatcher.handleViewAction({
-          type: Constants.ActionTypes.LOAD_CHANNEL_CENTER,
+          type: next ? Constants.ActionTypes.TO_LIST_VIEW : Constants.ActionTypes.LOAD_CHANNEL_CENTER,
           category: type,
-          data: resp.items
+          data: resp
         });
       } else {
         console.log('ajax error');
@@ -502,10 +511,12 @@ module.exports = {
 
     this.getVideos(channel);
   },
-  toListView: function(videos, selectedVideo) {
+  toListView: function(channel, videos, selectedVideo) {
+    var obj = channel;
+    obj.items = videos;
     AppDispatcher.handleViewAction({
       type: Constants.ActionTypes.TO_LIST_VIEW,
-      videos: videos,
+      data: obj,
       selectedVideo: selectedVideo
     });
     this.getVideo(selectedVideo.id);
