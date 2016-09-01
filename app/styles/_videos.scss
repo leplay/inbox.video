@@ -1,0 +1,165 @@
+$hover_color: #eee;
+
+.videos {
+  background-color: #fff;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-bottom: 40px;
+  width: 271px;
+
+  .status {
+    text-align: center;
+    height: 90px;
+    background-size: contain;
+    background-position: center center;
+
+    .text {
+      background-color: rgba(205, 32, 31, .95);
+      color: #fff;
+      display: inline-block;
+      padding: 0 16px;
+      line-height: 26px;
+      margin-top: 32px;
+
+      &.end, &.season_end {
+        background-color: #dc8383;
+      }
+    }    
+  }
+
+  .load-more {
+    background-color: #eee;
+    border: 1px solid #ccc;
+    color: #666;
+    cursor: pointer;
+    height: 26px;
+    line-height: 26px;
+    margin: 20px auto;
+    text-align: center;
+    width: 120px;
+
+    &:hover {
+      background-color: #ddd;
+    }
+  }
+
+  .selecting .video .block {
+    padding-left: 26px;
+  }
+
+  .selecting .video {
+    .checkbox:checked::before {
+      background-color: $hover_color;
+    }
+    .checkbox:checked + .block {
+      background-color: $hover_color;
+    }
+  }
+
+  .no-video-tip {
+    text-align: center;
+  }
+}
+
+
+.video {
+  border-bottom: 1px solid #ddd;
+  position: relative;
+
+  .block {
+    height: 48px;
+    padding: 10px 15px;
+    word-break: break-word;
+  }
+
+  &:last-child {
+    .block {
+      border-bottom: none;
+    }
+  }
+  .video-title {
+    color: #555;
+    font-size: 14px;
+    line-height: 16px;
+    height: 32px;
+    margin-bottom: 3px;
+    overflow: hidden;
+  }
+
+  .update-date {
+    font-size: 12px;
+    color: #888;
+  }
+
+  .checkbox {
+    border-radius: 50%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 26px;
+    height: 100%;
+    max-height: 68px;
+    outline: none;
+    -webkit-appearance: none;
+
+    &::before {
+      content: "";
+      display: block;
+      background-color: #fff;
+      left: 0;
+      top: 0;
+      width: 26px;
+      height: 100%;
+      pointer-events: none;
+      position: absolute;
+      text-align: center;
+    }
+    &::after {
+      color: #999;
+      content: "\f1db";
+      display: block;
+      font: normal normal normal 14px/1 FontAwesome;
+      width: 14px;
+      pointer-events: none;
+      position: absolute;
+      height: 14px;
+      top: 26px;
+      left: 6px;
+      z-index: 2;
+    }
+    &:checked::after {
+      color: #dc8383;
+      content: "\f058";
+    }
+  }
+
+  &.unwatched {
+    .video-title {
+      font-weight: bold;
+    }
+
+    &::after {
+      content: "";
+      border-radius: 50%;
+      background-color: #2793e8;
+      width: 8px;
+      height: 8px;
+      position: absolute;
+      right: 10px;
+      top: 30px;
+    }
+  }
+
+  &:hover, &.selected {
+    background-color: $hover_color;
+    .checkbox::before {
+      background-color: $hover_color;
+    }
+  }
+  &.new-season:hover {
+    .season-text {
+      background-color: #fff;
+    }
+  }
+
+}
