@@ -1,7 +1,7 @@
 [Inbox.Video](http://inbox.video/)
 ----
 
-![Screenshot](http://inbox.video/images/screen.png)
+![Screenshot](http://inbox.video/images/screenshot.png)
 
 ### Build
 
