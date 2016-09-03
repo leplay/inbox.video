@@ -14,7 +14,7 @@ var Navigation = React.createClass({
   componentDidMount: function() {
     if (this.props.user.$identity) {
       setTimeout(function() {
-        ActionCreator.refresh(this.props.watchlist);
+        // ActionCreator.refresh(this.props.watchlist);
       }.bind(this), 3000);
     }
   },

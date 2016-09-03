@@ -89,10 +89,12 @@ var HeisenbergStore = assign({}, BaseStore, {
     var action = payload.action;
     switch(action.type) {
       case Constants.ActionTypes.ADD_CHANNEL:
-        _.each(action.channelList, function(channel) {
+        var channels = action.channelList;
+        _.each(channels, function(channel) {
           delete channel['newItemCount']
           addItem(channel);
         });
+
         HeisenbergStore.emitChange();
         mixpanel.track(action.type, {count: action.channelList.length});
         Storage.updateData('watchlist', _watchlist);

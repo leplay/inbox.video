@@ -120,7 +120,7 @@ var VideoList = React.createClass({
         </div>
         <ol className={listClass}>
           {videos.map(video =>
-            <VideoItem video={video} currentChannel={currentChannel.title} selectMode={selectMode} selectedVideoId={selectedVideoId} isWatched={!isPlaylist && !isProfile ? unwatchedItems.indexOf(video.snippet.resourceId.videoId) < 0 : true} />
+            <VideoItem key={video.id} video={video} currentChannel={currentChannel.title} selectMode={selectMode} selectedVideoId={selectedVideoId} isWatched={!isPlaylist && !isProfile ? unwatchedItems.indexOf(video.snippet.resourceId.videoId) < 0 : true} />
           )}
         </ol>
         <div className={!videos.length ? 'no-video-tip' : 'no-video-tip hide'}>
