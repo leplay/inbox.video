@@ -1,9 +1,15 @@
 {
   "name": "Inbox.Video",
   "version": "2.0.0",
-  "description": "",
+  "description": "Inbox.Video is a new way to watch Youtube videos",
   "author": "leplay",
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/inboxvideo/inbox.video"
+  },
+  "bugs": {
+    "url": "https://github.com/inboxvideo/inbox.video/issues"
+  },
   "devDependencies": {
     "avoscloud-sdk": "^0.5.8",
     "babelify": "^6.0.2",
@@ -20,7 +26,6 @@
     "gulp-util": "^3.0.4",
     "reactify": "^1.1.0",
     "require-dir": "^0.3.0",
-    "underscore": "^1.8.3",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.1.0"
@@ -30,22 +35,11 @@
     "start": "gulp",
     "build": "gulp build"
   },
-  "jest": {
-    "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
-    "testFileExtensions": [
-      "es6",
-      "js"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "es6"
-    ]
-  },
   "dependencies": {
     "flux": "^2.0.1",
+    "jquery": "1.11.2",
+    "lodash": "^4.15.0",
     "object-assign": "^2.0.0",
-    "react": "^0.13.1",
-    "jquery": "1.11.2"
+    "react": "^0.13.1"
   }
 }

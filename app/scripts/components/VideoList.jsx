@@ -2,7 +2,7 @@
 
 var React = require('react');
 var $ = require('jquery');
-var _ = require('underscore');
+var _ = require('lodash');
 var VideoItem = require('./VideoItem.jsx');
 var ActionCreator = require('../actions/HeisenbergActionCreators');
 
@@ -119,8 +119,8 @@ var VideoList = React.createClass({
           <span className="text">{currentChannel.title}</span>
         </div>
         <ol className={listClass}>
-          {videos.map(video =>
-            <VideoItem video={video} currentChannel={currentChannel.title} selectMode={selectMode} selectedVideoId={selectedVideoId} isWatched={!isPlaylist && !isProfile ? unwatchedItems.indexOf(video.snippet.resourceId.videoId) < 0 : true} />
+          {videos.map((video, index) =>
+            <VideoItem key={index} video={video} currentChannel={currentChannel} selectMode={selectMode} selectedVideoId={selectedVideoId} isWatched={!isPlaylist && !isProfile ? unwatchedItems.indexOf(video.snippet.resourceId.videoId) < 0 : true} />
           )}
         </ol>
         <div className={!videos.length ? 'no-video-tip' : 'no-video-tip hide'}>

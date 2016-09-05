@@ -6,7 +6,7 @@ var BaseStore = require('./BaseStore');
 var assign = require('object-assign');
 var Storage = require('../utils/Storage');
 var $ = require('jquery');
-var _ = require('underscore');
+var _ = require('lodash');
 
 var _watchlist = Storage.getData('watchlist') || [];
 var _unwatched = Storage.getData('unwatched') || {};
@@ -31,7 +31,7 @@ var _refresh = {
 
 function addItem(channel) {
   var id = channel.channelId;
-  var ids = _.pluck(_watchlist, 'channelId');
+  var ids = _.map(_watchlist, 'channelId');
 
   if (ids.indexOf(id) < 0) {
     _watchlist.splice(0, 0, channel);
@@ -43,7 +43,7 @@ function addItem(channel) {
   }
 }
 function removeItem(id) {
-  var ids = _.pluck(_watchlist, 'channelId');
+  var ids = _.map(_watchlist, 'channelId');
   var index = ids.indexOf(id);
   _watchlist.splice(index, 1);
   _unwatched[id] = [];
@@ -89,10 +89,12 @@ var HeisenbergStore = assign({}, BaseStore, {
     var action = payload.action;
     switch(action.type) {
       case Constants.ActionTypes.ADD_CHANNEL:
-        _.each(action.channelList, function(channel) {
+        var channels = action.channelList;
+        _.each(channels, function(channel) {
           delete channel['newItemCount']
           addItem(channel);
         });
+
         HeisenbergStore.emitChange();
         mixpanel.track(action.type, {count: action.channelList.length});
         Storage.updateData('watchlist', _watchlist);
@@ -112,7 +114,7 @@ var HeisenbergStore = assign({}, BaseStore, {
         var channel = action.channel;
         var data = action.data;
         var isLikesPage = channel.channelId === 'likes';
-        var isPlaylist = _.contains(['likes', 'picks'], channel.channelId);
+        var isPlaylist = _.includes(['likes', 'picks'], channel.channelId);
         if (isLikesPage && data.items.length === data.pageInfo.totalResults) {
           _likes.videos = {};
         }
@@ -157,9 +159,7 @@ var HeisenbergStore = assign({}, BaseStore, {
       case Constants.ActionTypes.INIT_LIKES:
         _likes = action.data;
         _likes.videos = {};
-        // _unwatched[_likes.playlistId] = [];
         Storage.updateData('likes', _likes);
-        // Storage.updateData('unwatched', _unwatched);
         break;
       case Constants.ActionTypes.LOAD_DETAIL:
         _detail = action.data;

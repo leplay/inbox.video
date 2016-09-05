@@ -1,7 +1,7 @@
 'use strict';
 
 var $ = require('jquery');
-var _ = require('underscore');
+var _ = require('lodash');
 var AppDispatcher = require('../dispatchers/AppDispatcher');
 var Constants = require('../constants/AppConstants');
 
@@ -22,7 +22,7 @@ var likesPlaylist = {
 
 module.exports = {
   isPlaylist: function(str) {
-    return _.contains(['browse', 'browse-list', 'search', 'likes', 'picks'], str);
+    return _.includes(['browse', 'browse-list', 'search', 'likes', 'picks'], str);
   },
   search: function(keyword, next) {
     AppDispatcher.handleViewAction({
