@@ -1,6 +1,7 @@
 # Inbox.Video
 
 ![Screenshot](http://inbox.video/images/screenshot.png)
+[Inbox.Video](http://inbox.video/) is a new way to watch Youtube videos.
 
 ## Build
 
@@ -14,18 +15,20 @@ Develop with:
 
 Build with:
 
-    $ gulp build
+    $ npm build
 
 
 
 ## To Do
 
 - Icon & favicon
-- Desktop apps (Electron?)
-- Banner for Top Picks
-- Router
 - Order subscriptions
 - Shortcuts support
+- Banner for Top Picks
+- Try Inbox.Video without sign in
+- Upgrade react.js
+- Router
 - Auto mark status after video ends
-- More analytics on Profile page
+- More analytics or charts on Profile page
+- Desktop apps (Electron?)
 - Vimeo (maybe)
