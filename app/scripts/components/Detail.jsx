@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react');
+var _ = require('lodash');
 var ActionCreator = require('../actions/HeisenbergActionCreators');
 var FormatDate = require('../utils/FormatDate');
 var Player = require('./Player.jsx');
@@ -37,12 +38,13 @@ var Detail = React.createClass({
     }
   },
   render() {
-    var {detail} = this.props;
-    var {likes} = this.props;
-    var {isWatched} = this.props;
-    var {selectedChannelId} = this.props;
-    var {currentChannel} = this.props;
-    var {fullScreen} = this.props;
+    var { detail } = this.props;
+    var { watchlist } = this.props;
+    var { likes } = this.props;
+    var { isWatched } = this.props;
+    var { selectedChannelId } = this.props;
+    var { currentChannel } = this.props;
+    var { fullScreen } = this.props;
     var isSelectedChannel = selectedChannelId && selectedChannelId !== 'browse' && selectedChannelId !== 'profile';
 
     var detailName = detail.snippet ? detail.snippet.title : '';
@@ -54,15 +56,10 @@ var Detail = React.createClass({
     var playerUrl = detail.id ? ActionCreator.generatePlayerUrl(detail.id, 1) : '';
 
     var className;
+    var subscribeClass = '';
     var tipsClass = 'tips';
     var controlClass = 'control detail-control';
     var markAsClass = isPlaylist ? 'mark-as hide' : 'mark-as';
-
-    var likeClass = 'fa fa-heart-o';
-
-    if (detail.id && detail.id in likes.videos) {
-      likeClass = 'fa fa-heart';
-    }
 
     if (isSelectedChannel && isSelectedVideo) {
       className = 'detail with-bg';
@@ -72,9 +69,18 @@ var Detail = React.createClass({
       className = 'detail hide';
     }
 
+    if (!isPlaylist || _.find(watchlist, {channelId: detail.snippet ? detail.snippet.channelId : ''})) {
+      subscribeClass = 'hide';
+    }
+
     if (fullScreen) {
       controlClass += ' fullscreen-mode';
       tipsClass += ' hide';
+    }
+
+    var likeClass = 'fa fa-heart-o';
+    if (detail.id && detail.id in likes.videos) {
+      likeClass = 'fa fa-heart';
     }
 
     return (
@@ -84,7 +90,7 @@ var Detail = React.createClass({
           <p className={isWatched ? "update-date" : "update-date unwatched"}>
             <span>{FormatDate.format('yyyy-MM-dd HH:mm', detail.snippet ? new Date(detail.snippet.publishedAt).getTime() : 0)}</span>
             <span> by {detail.snippet ? detail.snippet.channelTitle : ''} </span>
-            <a className={isPlaylist ? '' : 'hide'} href="javascript:void(0)" onClick={this.subscribe.bind(this, detail.snippet ? detail.snippet.channelId : 0)}>Subscribe</a>
+            <a className={subscribeClass} href="javascript:void(0)" onClick={this.subscribe.bind(this, detail.snippet ? detail.snippet.channelId : 0)}>Subscribe</a>
           </p>
           <Player url={playerUrl} fullScreen={fullScreen} />
           <p className="source">Source： <a href="javascript:void(0)" onClick={this.clickLink.bind(this, url + '&feature=' + location.hostname)}>{url}</a></p>

@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require('react');
-var _ = require('underscore');
+var _ = require('lodash');
 var HeisenbergStore = require('../stores/HeisenbergStore');
 var ActionCreator = require('../actions/HeisenbergActionCreators');
 var Navigation = require('./Navigation.jsx');
@@ -57,19 +57,32 @@ var App = React.createClass({
     HeisenbergStore.removeChangeListener(this._onChange);
   },
   render() {
+    var { watchlist } = this.state;
+    var { unwatched } = this.state;
+    var { likes } = this.state;
+    var { videos } = this.state;
+    var { user } = this.state;
+    var { keyword } = this.state;
+    var { fullScreen } = this.state;
+    var { editMode } = this.state;
+    var { selectMode } = this.state;
+    var { loading } = this.state;
+    var { refresh } = this.state;
+    var { selectedChannel } = this.state;
     var { selectedChannelId } = this.state;
     var { selectedVideoId } = this.state;
+
     var isPlaylist = ActionCreator.isPlaylist(selectedChannelId);
     var isWatched = true;
     if (selectedChannelId && !isPlaylist && (selectedChannelId !== 'profile')) {
-      isWatched = this.state.unwatched[selectedChannelId].indexOf(selectedVideoId) < 0;
+      isWatched = unwatched[selectedChannelId].indexOf(selectedVideoId) < 0;
     }
     return (
       <div className="heisenberg-app">
-        <Navigation watchlist={this.state.watchlist} unwatched={this.state.unwatched} likes={this.state.likes} selectedChannelId={this.state.selectedChannelId} fullScreen={this.state.fullScreen} editMode={this.state.editMode} refresh={this.state.refresh} user={this.state.user} />
-        <VideoList videos={this.state.videos} unwatchedItems={this.state.unwatched[this.state.selectedChannelId]} selectedChannelId={this.state.selectedChannelId} selectedVideoId={this.state.selectedVideoId} fullScreen={this.state.fullScreen} currentChannel={this.state.selectedChannel} selectMode={this.state.selectMode} />
-        <Detail detail={this.state.detail} likes={this.state.likes} isWatched={isWatched} selectedChannelId={this.state.selectedChannelId} fullScreen={this.state.fullScreen} currentChannel={this.state.selectedChannel} />
-        <ChannelCenter keyword={this.state.keyword} user={this.state.user} loading={this.state.loading} videos={this.state.videos} selectedChannel={this.state.selectedChannel} selectedChannelId={this.state.selectedChannelId} isSelectedVideo={this.state.selectedVideoId} fullScreen={this.state.fullScreen} />
+        <Navigation watchlist={watchlist} unwatched={unwatched} likes={likes} selectedChannelId={selectedChannelId} fullScreen={fullScreen} editMode={editMode} refresh={refresh} user={user} />
+        <VideoList videos={videos} unwatchedItems={unwatched[selectedChannelId]} selectedChannelId={selectedChannelId} selectedVideoId={selectedVideoId} fullScreen={fullScreen} currentChannel={selectedChannel} selectMode={selectMode} />
+        <Detail watchlist={watchlist} detail={this.state.detail} likes={likes} isWatched={isWatched} selectedChannelId={selectedChannelId} fullScreen={fullScreen} currentChannel={selectedChannel} />
+        <ChannelCenter keyword={keyword} user={user} loading={loading} videos={videos} selectedChannel={selectedChannel} selectedChannelId={selectedChannelId} isSelectedVideo={selectedVideoId} fullScreen={fullScreen} />
      </div>
     );
   }
