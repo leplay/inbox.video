@@ -12,7 +12,7 @@ var Tip = React.createClass({
     var random = _.random(3);
     if (random === 0) {
       return (
-        <p>🖖 Inbox.Video is an open source project, let's <a href="javascript:void(0)" onClick={this.clickLink.bind(this, 'https://github.com/inboxvideo/inbox.video')}>build it together</a>.</p>
+        <p>🖖 Inbox.Video is an open source project, let's <a href="javascript:void(0)" onClick={this.clickLink.bind(this, 'https://github.com/inboxvideo/inbox.video/blob/master/CONTRIBUTING.md')}>build it together</a>.</p>
       );
     } else if (random === 1){
       return (
