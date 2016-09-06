@@ -5,6 +5,7 @@ var _ = require('lodash');
 var ActionCreator = require('../actions/HeisenbergActionCreators');
 var FormatDate = require('../utils/FormatDate');
 var Player = require('./Player.jsx');
+var Tip = require('./Tip.jsx');
 var Helper = require('./Helper.jsx');
 
 var Detail = React.createClass({
@@ -109,7 +110,7 @@ var Detail = React.createClass({
           <span className="icon icon-like" onClick={this.like}><i className={likeClass}></i></span>
         </div>
         <div className={tipsClass}>
-          <p>Made with <i className="fa fa-heartbeat fa-fw"></i> by <a href="javascript:void(0)" onClick={this.clickLink.bind(this, 'http://leplay.net/')}>Leplay</a> in Beijing.</p>
+          <Tip />
         </div>
       </div>
     );
