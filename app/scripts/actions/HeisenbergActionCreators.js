@@ -169,7 +169,7 @@ module.exports = {
       type: Constants.ActionTypes.REFRESH
     });
 
-    var ids = _.pluck(list, 'playlistId');
+    var ids = _.map(list, 'playlistId');
     var index = 0;
     function loop() {
       setTimeout(function() {
