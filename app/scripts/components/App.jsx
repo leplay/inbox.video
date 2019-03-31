@@ -22,31 +22,31 @@ var App = React.createClass({
     if (typeof gapi !== 'undefined') {
       gapi.load('auth2', function() {
         var auth2 = gapi.auth2.init(Constants.AuthObj);
-        auth2.isSignedIn.listen(this.statusListener)
+        // auth2.isSignedIn.listen(this.statusListener)
       }.bind(this));
     }
 
-    var hidden = 'hidden';
-    if (hidden in document) {
-      document.addEventListener('visibilitychange', onchange);
-    } else if ((hidden = 'mozHidden') in document) {
-      document.addEventListener('mozvisibilitychange', onchange);
-    } else if ((hidden = 'webkitHidden') in document) {
-      document.addEventListener('webkitvisibilitychange', onchange);
-    } else if ((hidden = 'msHidden') in document) {
-      document.addEventListener('msvisibilitychange', onchange);
-    } else if ('onfocusin' in document) {
-      document.onfocusin = document.onfocusout = onchange;
-    } else {
-      window.onpageshow = window.onpagehide = window.onfocus = window.onblur = onchange;
-    }
+    // var hidden = 'hidden';
+    // if (hidden in document) {
+    //   document.addEventListener('visibilitychange', onchange);
+    // } else if ((hidden = 'mozHidden') in document) {
+    //   document.addEventListener('mozvisibilitychange', onchange);
+    // } else if ((hidden = 'webkitHidden') in document) {
+    //   document.addEventListener('webkitvisibilitychange', onchange);
+    // } else if ((hidden = 'msHidden') in document) {
+    //   document.addEventListener('msvisibilitychange', onchange);
+    // } else if ('onfocusin' in document) {
+    //   document.onfocusin = document.onfocusout = onchange;
+    // } else {
+    //   window.onpageshow = window.onpagehide = window.onfocus = window.onblur = onchange;
+    // }
 
-    function onchange (evt) {
-      evt = evt || window.event;
-      if (evt.type === 'focus' || evt.type === 'focusin' || evt.type === 'pageshow' || !this[hidden]) {
-        ActionCreator.getToken();
-      }
-    }
+    // function onchange (evt) {
+    //   evt = evt || window.event;
+    //   if (evt.type === 'focus' || evt.type === 'focusin' || evt.type === 'pageshow' || !this[hidden]) {
+    //     ActionCreator.getToken();
+    //   }
+    // }
   },
   statusListener: function(bool) {
     if(bool) {

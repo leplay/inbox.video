@@ -35,7 +35,7 @@ var Welcome = React.createClass({
     return (
       <div className="channel-center form">
         <div className="inner-form">
-          <h1 className="name" title="Yep, we don't have a logo.">Inbox.Video</h1>
+          <h1 className="name" title="Inbox.Video">Inbox.Video</h1>
           <ul className="feature-list">
             <li>Watch status for every single video</li>
             <li>Manage subscriptions</li>
