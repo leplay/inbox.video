@@ -5,10 +5,10 @@
   "author": "leplay",
   "repository": {
     "type": "git",
-    "url": "https://github.com/inboxvideo/inbox.video"
+    "url": "https://github.com/leplay/inbox.video"
   },
   "bugs": {
-    "url": "https://github.com/inboxvideo/inbox.video/issues"
+    "url": "https://github.com/leplay/inbox.video/issues"
   },
   "devDependencies": {
     "avoscloud-sdk": "^0.5.8",

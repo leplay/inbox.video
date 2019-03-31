@@ -41,7 +41,7 @@ var Welcome = React.createClass({
             <li>Manage subscriptions</li>
             <li>Handpick videos</li>
             <li>Sync to Youtube</li>
-            <li><a href="javascript:void(0)" onClick={this.clickLink.bind(this, 'https://github.com/inboxvideo/inbox.video')}>Open source</a></li>
+            <li><a href="javascript:void(0)" onClick={this.clickLink.bind(this, 'https://github.com/leplay/inbox.video')}>Open source</a></li>
           </ul>
           <a href="javascript:void(0)" id="signin-button" className="button button-signin" onClick={this.handleAuth}></a>
         </div>

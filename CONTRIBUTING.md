@@ -15,7 +15,7 @@ Write a tweet with the video link and mention [@InboxVideo](https://twitter.com/
 
 ### Reporting Bugs
 
-[GitHub issues](https://github.com/inboxvideo/inbox.video/issues)
+[GitHub issues](https://github.com/leplay/inbox.video/issues)
 
 ### Suggesting Features
 
