@@ -80,7 +80,7 @@ var Detail = React.createClass({
     }
 
     var likeClass = 'fa fa-heart-o';
-    if (detail.id && detail.id in likes.videos) {
+    if (detail.id && (likes.videos && likes.videos[detail.id])) {
       likeClass = 'fa fa-heart';
     }
 

@@ -1,15 +1,15 @@
-'use strict';
+'use strict'
 
-var $ = require('jquery');
-var _ = require('lodash');
-var AppDispatcher = require('../dispatchers/AppDispatcher');
-var Constants = require('../constants/AppConstants');
+var $ = require('jquery')
+var _ = require('lodash')
+var AppDispatcher = require('../dispatchers/AppDispatcher')
+var Constants = require('../constants/AppConstants')
 
-var auth2;
-var subscriptions = [];
-var token = {};
-var channelList = [];
-var loopTimes = 0;
+var auth2
+var subscriptions = []
+window.token = {}
+var channelList = []
+var loopTimes = 0
 var likesPlaylist = {
   snippet: {
     title: 'Liked from Inbox.Video',
@@ -18,29 +18,29 @@ var likesPlaylist = {
   status: {
     privacyStatus: 'public'
   }
-};
+}
 
-module.exports = {
-  isPlaylist: function(str) {
-    return _.includes(['browse', 'browse-list', 'search', 'likes', 'picks'], str);
+const creators = {
+  isPlaylist: function (str) {
+    return _.includes(['browse', 'browse-list', 'search', 'likes', 'picks'], str)
   },
-  search: function(keyword, next) {
+  search: function (keyword, next) {
     AppDispatcher.handleViewAction({
       type: Constants.ActionTypes.LOADING,
       category: 'SEARCH'
-    });
+    })
 
-    var access_token = token.id;
+    var access_token = token.id
     var data = {
-      'part': 'snippet',
-      'type': 'video',
-      'q': keyword,
-      'maxResults': 48,
-      'access_token': access_token
-    };
+      part: 'snippet',
+      type: 'video',
+      q: keyword,
+      maxResults: 48,
+      access_token: access_token
+    }
 
     if (next) {
-      data.pageToken = next;
+      data.pageToken = next
     }
 
     $.ajax({
@@ -49,44 +49,44 @@ module.exports = {
       xhrFields: {
         withCredentials: true
       }
-    }).done(function(resp) {
+    }).done(function (resp) {
       if (resp) {
         AppDispatcher.handleViewAction({
           type: Constants.ActionTypes.SEARCH,
           keyword: keyword,
           data: resp
-        });
+        })
       } else {
-        console.log('ajax error');
+        console.log('ajax error')
       }
-    });
+    })
   },
-  getVideoList: function(type, next) {
-    var access_token = token.id;
+  getVideoList: function (type, next) {
+    var access_token = token.id
     if (!access_token) {
-      this.getToken(this.getVideoList);
-      return false;
+      this.getToken(this.getVideoList)
+      return false
     }
 
     if (type === undefined) {
-      type = 'mostPopular';
+      type = 'mostPopular'
     }
 
     AppDispatcher.handleViewAction({
       type: Constants.ActionTypes.LOADING,
       category: type
-    });
+    })
 
-    var access_token = token.id;
+    var access_token = token.id
     var data = {
-      'part': 'snippet',
-      'chart': type,
-      'maxResults': 12,
-      'access_token': access_token
-    };
+      part: 'snippet',
+      chart: type,
+      maxResults: 12,
+      access_token: access_token
+    }
 
     if (next) {
-      data.pageToken = next;
+      data.pageToken = next
     }
 
     $.ajax({
@@ -95,97 +95,97 @@ module.exports = {
       xhrFields: {
         withCredentials: true
       }
-    }).done(function(resp) {
+    }).done(function (resp) {
       if (resp) {
         AppDispatcher.handleViewAction({
           type: next ? Constants.ActionTypes.TO_LIST_VIEW : Constants.ActionTypes.LOAD_CHANNEL_CENTER,
           category: type,
           data: resp
-        });
+        })
       } else {
-        console.log('ajax error');
+        console.log('ajax error')
       }
-    });
+    })
   },
-  removeChannel: function(channel) {
-    var access_token = token.id;
+  removeChannel: function (channel) {
+    var access_token = token.id
 
     AppDispatcher.handleViewAction({
       type: Constants.ActionTypes.REMOVE_CHANNEL,
       id: channel.channelId
-    });
+    })
     $.ajax({
       url: Constants.ActionUrls.SUBSCRIPTIONS + '?id=' + channel.subscriptionId + '&access_token=' + access_token,
       type: 'DELETE',
       xhrFields: {
         withCredentials: true
       }
-    });
+    })
   },
-  markAs: function(channelId, videoIds, status) {
+  markAs: function (channelId, videoIds, status) {
     AppDispatcher.handleViewAction({
       type: Constants.ActionTypes.MARK_AS,
       channelId: channelId,
       videoIds: videoIds,
-      status: status 
-    });
+      status: status
+    })
   },
-  toggleEditMode: function() {
+  toggleEditMode: function () {
     AppDispatcher.handleViewAction({
       type: Constants.ActionTypes.TOGGLE_EDIT_MODE
-    });
+    })
   },
-  toggleSelectMode: function() {
+  toggleSelectMode: function () {
     AppDispatcher.handleViewAction({
       type: Constants.ActionTypes.TOGGLE_SELECT_MODE
-    });
+    })
   },
-  toggleFullScreen: function() {
+  toggleFullScreen: function () {
     AppDispatcher.handleViewAction({
       type: Constants.ActionTypes.TOGGLE_FULL_SCREEN
-    });
+    })
   },
-  openLink: function(url) {
+  openLink: function (url) {
     AppDispatcher.handleViewAction({
       type: Constants.ActionTypes.OPEN_LINK,
       url: url
-    });
+    })
   },
-  generatePlayerUrl: function(id, embed) {
-    var url;
+  generatePlayerUrl: function (id, embed) {
+    var url
     if (!embed) {
-      url = 'https://www.youtube.com/watch?v=' + id;
+      url = 'https://www.youtube.com/watch?v=' + id
     } else {
-      url = 'https://www.youtube.com/embed/' + id;
+      url = 'https://www.youtube.com/embed/' + id
     }
-    return url;
+    return url
   },
-  refresh: function(list) {
+  refresh: function (list) {
     if (!list.length) {
-      return false;
+      return false
     }
 
     AppDispatcher.handleViewAction({
       type: Constants.ActionTypes.REFRESH
-    });
+    })
 
-    var ids = _.map(list, 'playlistId');
-    var index = 0;
-    function loop() {
-      setTimeout(function() {
+    var ids = _.map(list, 'playlistId')
+    var index = 0
+    function loop () {
+      setTimeout(function () {
         if (index === ids.length) {
           AppDispatcher.handleViewAction({
             type: Constants.ActionTypes.REFRESH,
-            index: -1,
-          });
+            index: -1
+          })
         } else {
-          var access_token = token.id;
+          var access_token = token.id
           var data = {
-            'part': 'snippet',
-            'maxResults': 15,
-            'playlistId': ids[index],
-            'access_token': access_token
-          };
+            part: 'snippet',
+            maxResults: 15,
+            playlistId: ids[index],
+            access_token: access_token
+          }
 
           $.ajax({
             url: Constants.ActionUrls.PLAYLIST_ITEMS,
@@ -193,38 +193,38 @@ module.exports = {
             xhrFields: {
               withCredentials: true
             }
-          }).done(function(resp) {
+          }).done(function (resp) {
             if (resp) {
               AppDispatcher.handleViewAction({
                 type: Constants.ActionTypes.REFRESH,
                 index: index,
                 totalItemCount: resp.pageInfo.totalResults,
                 data: resp.items
-              });
+              })
             } else {
-              console.log('ajax error');
+              console.log('ajax error')
             }
             if (index < ids.length) {
-              index++;
-              loop();
+              index++
+              loop()
             }
-          });
+          })
         }
-      }, 10);
+      }, 10)
     }
-    loop();
+    loop()
   },
-  getVideos: function(channel, next) {
-    var access_token = token.id;
+  getVideos: function (channel, next) {
+    var access_token = token.id
     var data = {
-      'part': 'snippet,contentDetails',
-      'maxResults': 15,
-      'playlistId': channel.playlistId,
-      'access_token': access_token
-    };
+      part: 'snippet,contentDetails',
+      maxResults: 15,
+      playlistId: channel.playlistId,
+      access_token: access_token
+    }
 
     if (next) {
-      data.pageToken = next;
+      data.pageToken = next
     }
 
     $.ajax({
@@ -233,74 +233,75 @@ module.exports = {
       xhrFields: {
         withCredentials: true
       }
-    }).done(function(resp) {
+    }).done(function (resp) {
       if (resp) {
         AppDispatcher.handleViewAction({
           type: Constants.ActionTypes.LOAD_VIDEOS,
           data: resp,
           channel: channel
-        });
+        })
       } else {
-        console.log('ajax error');
+        console.log('ajax error')
       }
-    }).fail(function(resp) {
+    }).fail(function (resp) {
       if (resp.status === 401) {
-        this.getToken();
+        this.getToken()
       }
-    }.bind(this));
+    }.bind(this))
   },
-  getVideo: function(id) {
-    var access_token = token.id;
+  getVideo: function (id) {
+    var access_token = token.id
     var data = {
-      'part': 'snippet,player',
-      'maxResults': 50,
-      'id': id,
-      'access_token': access_token
-    };
+      part: 'snippet,player',
+      maxResults: 50,
+      id: id,
+      access_token: access_token
+    }
     $.ajax({
       url: Constants.ActionUrls.VIDEO,
       data: data,
       xhrFields: {
         withCredentials: true
       }
-    }).done(function(resp) {
+    }).done(function (resp) {
       if (resp) {
         AppDispatcher.handleViewAction({
           type: Constants.ActionTypes.LOAD_DETAIL,
           data: resp.items[0]
-        });
+        })
       }
-    }).fail(function(resp) {
+    }).fail(function (resp) {
       if (resp.status === 401) {
-        this.getToken();
+        this.getToken()
       }
-    }.bind(this));
+    }.bind(this))
   },
-  getToken: function(callback) {
-    var now = new Date().getTime();
+  getToken: function (callback) {
+    var now = new Date().getTime()
+    var that = this
     if (gapi.auth && (!token.id || token.expiresAt < now)) {
-      gapi.auth.authorize(Constants.AuthObj, function(result) {
-        token.id = result.access_token;
-        token.expiresAt = parseInt(result.expires_at) * 1000;
+      gapi.auth.authorize(Constants.AuthObj, function (result) {
+        token.id = result.access_token
+        token.expiresAt = parseInt(result.expires_at) * 1000
         if (callback) {
-          callback();
+          callback.call(that)
         }
-      }.bind(this));
+      })
     } else {
       if (callback) {
-        callback();
+        // callback.call(that)
       }
     }
   },
-  initWatched: function(channels) {
-    _.each(channels, function(channel) {
-      var access_token = token.id;
+  initWatched: function (channels) {
+    _.each(channels, function (channel) {
+      var access_token = token.id
       var data = {
-        'part': 'snippet,contentDetails',
-        'maxResults': channel.newItemCount,
-        'playlistId': channel.playlistId,
-        'access_token': access_token
-      };
+        part: 'snippet,contentDetails',
+        maxResults: channel.newItemCount,
+        playlistId: channel.playlistId,
+        access_token: access_token
+      }
 
       $.ajax({
         url: Constants.ActionUrls.PLAYLIST_ITEMS,
@@ -308,12 +309,12 @@ module.exports = {
         xhrFields: {
           withCredentials: true
         }
-      }).done(function(resp) {
+      }).done(function (resp) {
         if (resp) {
-          var videoIds = [];
-          _.each(resp.items, function(item) {
-            videoIds.push(item.snippet.resourceId.videoId);
-          });
+          var videoIds = []
+          _.each(resp.items, function (item) {
+            videoIds.push(item.snippet.resourceId.videoId)
+          })
 
           AppDispatcher.handleViewAction({
             type: Constants.ActionTypes.MARK_AS,
@@ -321,24 +322,24 @@ module.exports = {
             channelId: channel.channelId,
             videoIds: videoIds,
             isInit: true
-          });
+          })
         } else {
-          console.log('ajax error');
+          console.log('ajax error')
         }
-      });
-    });
+      })
+    })
   },
-  fetchSubscriptions: function(next) {
-    var access_token = token.id;
+  fetchSubscriptions: function (next) {
+    var access_token = token.id
     var data = {
-      'part': 'snippet,contentDetails',
-      'mine': true,
-      'maxResults': 50,
-      'access_token': access_token
-    };
+      part: 'snippet,contentDetails',
+      mine: true,
+      maxResults: 50,
+      access_token: access_token
+    }
 
     if (next) {
-      data.pageToken = next;
+      data.pageToken = next
     }
 
     $.ajax({
@@ -347,21 +348,21 @@ module.exports = {
       xhrFields: {
         withCredentials: true
       }
-    }).done(function(resp) {
+    }).done(function (resp) {
       if (resp.items.length && resp.nextPageToken) {
-        subscriptions = subscriptions.concat(resp.items);
-        this.fetchSubscriptions(resp.nextPageToken);
+        subscriptions = subscriptions.concat(resp.items)
+        this.fetchSubscriptions(resp.nextPageToken)
       } else if (resp) {
-        subscriptions = subscriptions.concat(resp.items);
+        subscriptions = subscriptions.concat(resp.items)
         if (subscriptions.length) {
-          this.getPlaylistFromChannel(subscriptions, 0);
-        }   
+          this.getPlaylistFromChannel(subscriptions, 0)
+        }
       }
-    }.bind(this));
+    }.bind(this))
   },
-  subscribe: function(id) {
-    channelList = [];
-    var access_token = token.id;
+  subscribe: function (id) {
+    channelList = []
+    var access_token = token.id
     var resource = {
       snippet: {
         resourceId: {
@@ -369,7 +370,7 @@ module.exports = {
           channelId: id
         }
       }
-    };
+    }
 
     $.ajax({
       url: Constants.ActionUrls.SUBSCRIPTIONS + '?part=snippet,contentDetails&access_token=' + access_token,
@@ -379,109 +380,109 @@ module.exports = {
       xhrFields: {
         withCredentials: true
       }
-    }).done(function(resp) {
+    }).done(function (resp) {
       if (resp) {
-        var arr = [resp];
-        this.getPlaylistFromChannel(arr, 0);
+        var arr = [resp]
+        this.getPlaylistFromChannel(arr, 0)
       }
-    }.bind(this));
+    }.bind(this))
   },
-  getPlaylistFromChannel: function(list, loop) {
-    var channels = list.splice(0, 45);
-    var ids = [];
-    var access_token = token.id;
-    _.each(channels, function(channel) {
-      var obj = {};
-      obj.subscriptionId = channel.id;
-      obj.channelId = channel.snippet.resourceId.channelId;
-      obj.provider = 'youtube';
-      obj.newItemCount = channel.contentDetails.newItemCount;
-      obj.totalItemCount = channel.contentDetails.totalItemCount;
-      channelList.push(obj);
-      ids.push(channel.snippet.resourceId.channelId);
-    });
+  getPlaylistFromChannel: function (list, loop) {
+    var channels = list.splice(0, 45)
+    var ids = []
+    var access_token = token.id
+    _.each(channels, function (channel) {
+      var obj = {}
+      obj.subscriptionId = channel.id
+      obj.channelId = channel.snippet.resourceId.channelId
+      obj.provider = 'youtube'
+      obj.newItemCount = channel.contentDetails.newItemCount
+      obj.totalItemCount = channel.contentDetails.totalItemCount
+      channelList.push(obj)
+      ids.push(channel.snippet.resourceId.channelId)
+    })
 
     var data = {
-      'part': 'snippet,contentDetails',
-      'id': ids.join(','),
-      'maxResults': 50,
-      'access_token': access_token
-    };
+      part: 'snippet,contentDetails',
+      id: ids.join(','),
+      maxResults: 50,
+      access_token: access_token
+    }
     $.ajax({
       url: Constants.ActionUrls.CHANNEL,
       data: data,
       xhrFields: {
         withCredentials: true
       }
-    }).done(function(resp) {
-      _.each(resp.items, function(item, i) {
-        var index = loop*45 + i;
-        channelList[index]['playlistId'] = item.contentDetails.relatedPlaylists.uploads;
-        channelList[index]['title'] = item.snippet.title;
-        channelList[index]['description'] = item.snippet.description;
-        channelList[index]['thumbnail'] = item.snippet.thumbnails.high.url;
-        channelList[index]['updatedAt'] = new Date().getTime();
-      }.bind(this));
+    }).done(function (resp) {
+      _.each(resp.items, function (item, i) {
+        var index = loop * 45 + i
+        channelList[index].playlistId = item.contentDetails.relatedPlaylists.uploads
+        channelList[index].title = item.snippet.title
+        channelList[index].description = item.snippet.description
+        channelList[index].thumbnail = item.snippet.thumbnails.high.url
+        channelList[index].updatedAt = new Date().getTime()
+      })
       if (list.length > 0) {
-        loopTimes++;
-        this.getPlaylistFromChannel(list, loopTimes);
+        loopTimes++
+        this.getPlaylistFromChannel(list, loopTimes)
       } else {
         if (channelList.length > 1) {
-          this.initWatched(channelList);
+          this.initWatched(channelList)
         }
         AppDispatcher.handleViewAction({
           type: Constants.ActionTypes.ADD_CHANNEL,
           channelList: channelList.reverse()
-        });
+        })
       }
-    }.bind(this));
+    }.bind(this))
   },
-  initLikesPlaylist: function() {
-    var access_token = token.id;
+  initLikesPlaylist: function () {
+    var access_token = token.id
     var data = {
-      'part': 'snippet,contentDetails',
-      'mine': true,
-      'maxResults': 50,
-      'access_token': access_token
-    };
+      part: 'snippet,contentDetails',
+      mine: true,
+      maxResults: 50,
+      access_token: access_token
+    }
     $.ajax({
       url: Constants.ActionUrls.PLAYLIST,
       data: data,
       xhrFields: {
         withCredentials: true
       }
-    }).done(function(resp) {
-      var likesObj;
-      _.each(resp.items, function(item) {
-        if(item.snippet.title === likesPlaylist.snippet.title) {
-          likesObj = item;
+    }).done(function (resp) {
+      var likesObj
+      _.each(resp.items, function (item) {
+        if (item.snippet.title === likesPlaylist.snippet.title) {
+          likesObj = item
         }
-      });
+      })
 
       if (likesObj) {
-        this.savePlaylist(likesObj, 'likes');
+        this.savePlaylist(likesObj, 'likes')
       } else {
-        this.insertLikes();
+        this.insertLikes()
       }
-    }.bind(this));
+    }.bind(this))
   },
-  savePlaylist: function(data, tab) {
-    var obj = {};
-    obj.channelId = tab;
-    obj.playlistId = data.id;
-    obj.provider = 'youtube';
-    obj.totalItemCount = data.contentDetails.itemCount;
-    obj.title = data.snippet.title;
-    obj.description = data.snippet.description;
-    obj.updatedAt = new Date().getTime();
+  savePlaylist: function (data, tab) {
+    var obj = {}
+    obj.channelId = tab
+    obj.playlistId = data.id
+    obj.provider = 'youtube'
+    obj.totalItemCount = data.contentDetails.itemCount
+    obj.title = data.snippet.title
+    obj.description = data.snippet.description
+    obj.updatedAt = new Date().getTime()
 
     AppDispatcher.handleViewAction({
       type: tab === 'likes' ? Constants.ActionTypes.INIT_LIKES : Constants.ActionTypes.INIT_PLAYLIST,
       data: obj
-    });
+    })
   },
-  insertLikes: function() {
-    var access_token = token.id;
+  insertLikes: function () {
+    var access_token = token.id
 
     $.ajax({
       url: Constants.ActionUrls.PLAYLIST + '?part=snippet,contentDetails,status&access_token=' + access_token,
@@ -491,42 +492,42 @@ module.exports = {
       xhrFields: {
         withCredentials: true
       }
-    }).done(function(resp) {
+    }).done(function (resp) {
       if (resp) {
-        this.savePlaylist(resp, 'likes');
+        this.savePlaylist(resp, 'likes')
       }
-    }.bind(this));
+    }.bind(this))
   },
-  showLikes: function(data) {
+  showLikes: function (data) {
     AppDispatcher.handleViewAction({
       type: Constants.ActionTypes.SHOW_PAGE,
       page: 'likes'
-    });
+    })
 
-    this.getVideos(data);
+    this.getVideos(data)
   },
-  showPage: function(channel, page) {
+  showPage: function (channel, page) {
     AppDispatcher.handleViewAction({
       type: Constants.ActionTypes.SHOW_PAGE,
       page: page
-    });
+    })
 
     if (channel) {
-      this.getVideos(channel);
+      this.getVideos(channel)
     }
   },
-  toListView: function(channel, videos, selectedVideo) {
-    var obj = channel;
-    obj.items = videos;
+  toListView: function (channel, videos, selectedVideo) {
+    var obj = channel
+    obj.items = videos
     AppDispatcher.handleViewAction({
       type: Constants.ActionTypes.TO_LIST_VIEW,
       data: obj,
       selectedVideo: selectedVideo
-    });
-    this.getVideo(selectedVideo.id);
+    })
+    this.getVideo(selectedVideo.id)
   },
-  like: function(detail, likes) {
-    var access_token = token.id;
+  like: function (detail, likes) {
+    var access_token = token.id
     var resource = {
       snippet: {
         playlistId: likes.playlistId,
@@ -536,8 +537,8 @@ module.exports = {
           videoId: detail.id
         }
       }
-    };
-    if (!(detail.id in likes.videos)) {
+    }
+    if (!(likes.videos && likes.videos[detail.id])) {
       $.ajax({
         url: Constants.ActionUrls.PLAYLIST_ITEMS + '?part=snippet,contentDetails&access_token=' + access_token,
         type: 'POST',
@@ -546,16 +547,15 @@ module.exports = {
         xhrFields: {
           withCredentials: true
         }
-      }).done(function(resp) {
+      }).done(function (resp) {
         if (resp) {
           AppDispatcher.handleViewAction({
             type: Constants.ActionTypes.LIKE,
             id: detail.id,
             playlistItemId: resp.id
-          });
-
+          })
         }
-      }.bind(this));
+      })
     } else {
       $.ajax({
         url: Constants.ActionUrls.PLAYLIST_ITEMS + '?id=' + likes.videos[detail.id] + '&access_token=' + access_token,
@@ -563,23 +563,24 @@ module.exports = {
         xhrFields: {
           withCredentials: true
         }
-      }).done(function(resp) {
+      }).done(function (resp) {
         AppDispatcher.handleViewAction({
           type: Constants.ActionTypes.LIKE,
           id: detail.id
-        });
-      }.bind(this));
+        })
+      })
     }
   },
-  createIdentity: function(profile) {
+  createIdentity: function (profile) {
     AppDispatcher.handleViewAction({
       type: Constants.ActionTypes.CREATE_IDENTITY,
       email: profile.email,
       name: profile.name,
       avatar: profile.avatar,
       id: profile.id
-    });
-
-    this.getVideoList();
+    })
+    this.getVideoList()
   }
-};
+}
+
+module.exports = creators

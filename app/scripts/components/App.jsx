@@ -1,7 +1,6 @@
 'use strict';
 
 var React = require('react');
-var _ = require('lodash');
 var HeisenbergStore = require('../stores/HeisenbergStore');
 var ActionCreator = require('../actions/HeisenbergActionCreators');
 var Navigation = require('./Navigation.jsx');
@@ -19,11 +18,19 @@ var App = React.createClass({
   },
   componentDidMount: function() {
     HeisenbergStore.addChangeListener(this._onChange);
-    if (typeof gapi !== 'undefined') {
+    window.initGoogleAuth = function () {
       gapi.load('auth2', function() {
-        var auth2 = gapi.auth2.init(Constants.AuthObj);
-        // auth2.isSignedIn.listen(this.statusListener)
-      }.bind(this));
+        gapi.auth2.authorize(Constants.AuthObj, function(response) {
+          if (response.error) {
+            return
+          }
+          window.token = {
+            id: response.access_token,
+            expiresAt: parseInt(response.expires_at) * 1000
+          }
+          ActionCreator.getVideoList()
+        })
+      }.bind(this))
     }
 
     // var hidden = 'hidden';
@@ -57,20 +64,7 @@ var App = React.createClass({
     HeisenbergStore.removeChangeListener(this._onChange);
   },
   render() {
-    var { watchlist } = this.state;
-    var { unwatched } = this.state;
-    var { likes } = this.state;
-    var { videos } = this.state;
-    var { user } = this.state;
-    var { keyword } = this.state;
-    var { fullScreen } = this.state;
-    var { editMode } = this.state;
-    var { selectMode } = this.state;
-    var { loading } = this.state;
-    var { refresh } = this.state;
-    var { selectedChannel } = this.state;
-    var { selectedChannelId } = this.state;
-    var { selectedVideoId } = this.state;
+    var { watchlist, unwatched, likes, videos, user, keyword, fullScreen, editMode, selectMode, loading, refresh, selectedChannel, selectedChannelId, selectedVideoId } = this.state;
 
     var isPlaylist = ActionCreator.isPlaylist(selectedChannelId);
     var isWatched = true;
